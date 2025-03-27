@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router'
 import { api } from '@/api/axios.ts'
 import '@/assets/css/pagination.css'
 import ActionButton from '@/pages/common/action-button.tsx'
+import Header from '@/pages/common/header.tsx'
 import { UserInfo } from '@/pages/users/schema/user-info-schema.tsx'
 
 export default function UsersPage() {
@@ -87,6 +88,7 @@ export default function UsersPage() {
 
     return (
         <div className="p-4">
+            <Header />
             <h1 className="text-xl font-bold mb-4 mt-10">사용자 목록</h1>
             <div className="flex justify-between items-center">
                 <div>{loading ? <p>Loading...</p> : <p>(총 {totalElements}명)</p>}</div>
