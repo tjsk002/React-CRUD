@@ -6,8 +6,14 @@ import { api } from '@/api/axios.ts'
 export default function Signup() {
     const navigate = useNavigate()
     const [email, setEmail] = useState('')
+    const [nickname, setNickName] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+    const [errorMessage, setErrorMessage] = useState('')
+
+    const [emailError, setEmailError] = useState('')
+    const [nickNameError, setNickNameError] = useState('')
+    const [passwordError, setPasswordError] = useState('')
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -18,14 +24,21 @@ export default function Signup() {
         await api
             .post(`/auth/signup`, {
                 username: email,
+                nickName: nickname,
+                role: 'ADMIN_ROLE',
                 password: password,
             })
             .then((response) => {
-                console.log(response)
+                alert(response.data.resultData.message)
+                setErrorMessage('')
+                navigate('/auth/login')
                 alert('회원가입 성공했습니다')
             })
             .catch((error) => {
-                console.log(error.resultData.message)
+                setErrorMessage(error.response.data.resultData.message)
+                setNickNameError(error.response.data.resultData.errors.nickName)
+                setEmailError(error.response.data.resultData.errors.username)
+                setPasswordError(error.response.data.resultData.errors.password)
             })
     }
 
@@ -46,6 +59,16 @@ export default function Signup() {
                         className="p-3 border rounded-md"
                         required
                     />
+                    <p className="text-red-500">{emailError}</p>
+                    <input
+                        type="text"
+                        placeholder="닉네임"
+                        value={nickname}
+                        onChange={(e) => setNickName(e.target.value)}
+                        className="p-3 border rounded-md"
+                        required
+                    />
+                    <p className="text-red-500">{nickNameError}</p>
                     <input
                         type="password"
                         placeholder="비밀번호"
@@ -62,6 +85,8 @@ export default function Signup() {
                         className="p-3 border rounded-md"
                         required
                     />
+                    <p className="text-red-500">{passwordError}</p>
+                    <p className="text-red-500">{errorMessage}</p>
                     <button
                         type="submit"
                         className="bg-green-500 text-white py-2 rounded-md hover:bg-green-600 transition"
