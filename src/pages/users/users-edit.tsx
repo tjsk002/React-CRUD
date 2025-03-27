@@ -1,4 +1,3 @@
-// import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useLocation, useNavigate } from 'react-router'
 
@@ -16,13 +15,10 @@ export default function UsersEditPage() {
         register,
         handleSubmit,
         formState: { errors },
-        // reset,
     } = useForm<UserInfo>({
         resolver: zodResolver(userInfoSchema),
         defaultValues: user,
     })
-
-    // useEffect(() => {}, [user, reset])
 
     const onSubmit = async (data: UserInfo) => {
         await api
@@ -33,7 +29,7 @@ export default function UsersEditPage() {
             })
             .then(() => {
                 alert('사용자 정보가 성공적으로 수정되었습니다.')
-                navigate(`/`)
+                navigate('/users/list')
             })
             .catch((errors) => {
                 alert('오류 발생' + errors)

@@ -30,7 +30,7 @@ export default function UsersCreatePage() {
             })
             .then(() => {
                 alert('사용자가 성공적으로 등록되었습니다.')
-                navigate('/')
+                navigate('/users/list')
             })
             .catch((error) => {
                 console.error('사용자 등록 실패:', error)
