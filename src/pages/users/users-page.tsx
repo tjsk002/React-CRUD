@@ -2,35 +2,31 @@ import { useState } from 'react'
 import ReactPaginate from 'react-paginate'
 import { useNavigate } from 'react-router'
 
-import { api } from '@/api/axios.ts'
+import { deleteUser, getUsers } from '@/api/users.ts'
 import '@/assets/css/pagination.css'
 import ActionButton from '@/pages/common/action-button.tsx'
-import Header from '@/pages/common/header.tsx'
 import { UserInfo } from '@/pages/users/schema/user-info-schema.tsx'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 export default function UsersPage() {
+    const initPage = 0
     const navigate = useNavigate()
     const queryClient = useQueryClient()
-    const [currentPage, setCurrentPage] = useState(0)
-
-    const fetchUsers = async (page: number) => {
-        const response = await api.get(`/users?page=${page}`)
-
-        return response.data.resultData
-    }
+    const [currentPage, setCurrentPage] = useState(initPage)
 
     const { data, isLoading } = useQuery({
         queryKey: ['users', currentPage],
-        queryFn: () => fetchUsers(currentPage),
+        queryFn: () => getUsers(currentPage),
     })
 
     const deleteUserMutation = useMutation({
-        mutationFn: async (userId: number) => {
-            await api.delete(`/users/${userId}`)
-        },
+        mutationFn: deleteUser,
         onSuccess: () => {
+            alert('사용자가 성공적으로 탈퇴되었습니다.')
             queryClient.invalidateQueries({ queryKey: ['users'] }).then(() => {})
+        },
+        onError: (error) => {
+            alert('사용자 탈퇴 중 오류가 발생했습니다. ' + error)
         },
     })
 
@@ -70,7 +66,6 @@ export default function UsersPage() {
 
     return (
         <div className="p-4">
-            <Header />
             <h1 className="text-xl font-bold mb-4 mt-10">사용자 목록</h1>
             <div className="flex justify-between items-center">
                 <div>
