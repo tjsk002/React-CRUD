@@ -12,12 +12,12 @@ export default function Router() {
     return (
         <Routes>
             <Route path="" element={<Main />} />
-            <Route path="/users/all" element={<All />} />
             <Route path="/auth/login" element={<Login />} />
             <Route path="/auth/signup" element={<Signup />} />
             <Route path="/users/list" element={<UsersPage />} />
             <Route path="/users/create" element={<UsersCreatePage />} />
             <Route path="/users/edit" element={<UsersEditPage />} />
+            <Route path="/users/all" element={<All />} />
         </Routes>
     )
 }
