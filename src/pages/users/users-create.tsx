@@ -6,6 +6,7 @@ import FormButton from '@/pages/common/form-button.tsx'
 import Header from '@/pages/common/header.tsx'
 import { UserInfo, userInfoSchema } from '@/pages/users/schema/user-info-schema.tsx'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation } from '@tanstack/react-query'
 
 export default function UsersCreatePage() {
     const navigate = useNavigate()
@@ -22,21 +23,20 @@ export default function UsersCreatePage() {
         },
     })
 
-    const onSubmit = async (data: UserInfo) => {
-        await api
-            .post('/users', {
-                userData: {
-                    ...data,
-                },
-            })
-            .then(() => {
-                alert('사용자가 성공적으로 등록되었습니다.')
-                navigate('/users/list')
-            })
-            .catch((error) => {
-                console.error('사용자 등록 실패:', error)
-                alert('사용자 등록 중 오류가 발생했습니다.')
-            })
+    const mutation = useMutation({
+        mutationFn: (data: UserInfo) => api.post('/users', { userData: data }),
+        onSuccess: () => {
+            alert('사용자가 성공적으로 등록되었습니다.')
+            navigate('/')
+        },
+        onError: (error) => {
+            console.error('사용자 등록 실패:', error)
+            alert('사용자 등록 중 오류가 발생했습니다.')
+        },
+    })
+
+    const onSubmit = (data: UserInfo) => {
+        mutation.mutate(data)
     }
 
     return (
@@ -45,7 +45,6 @@ export default function UsersCreatePage() {
             <div className="min-h-screen bg-gray-100 flex items-center justify-center">
                 <div className="w-full max-w-2xl bg-white p-8 shadow-lg rounded-lg border">
                     <h2 className="text-3xl font-bold mb-6 text-center">사용자 추가</h2>
-
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="mb-4">
                             <label className="block text-gray-700" htmlFor="username">

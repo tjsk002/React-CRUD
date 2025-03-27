@@ -1,8 +1,4 @@
-/**
- * API 요청으로 받은 데이터를 테이블로 표시
- * 데이터 로드 중에는 테이블 행에 'Loading...' 텍스트 표시
- */
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import ReactPaginate from 'react-paginate'
 import { useNavigate } from 'react-router'
 
@@ -11,72 +7,58 @@ import '@/assets/css/pagination.css'
 import ActionButton from '@/pages/common/action-button.tsx'
 import Header from '@/pages/common/header.tsx'
 import { UserInfo } from '@/pages/users/schema/user-info-schema.tsx'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 export default function UsersPage() {
     const navigate = useNavigate()
-    const [users, setUsers] = useState<UserInfo[]>([])
-    const [loading, setLoading] = useState(true)
+    const queryClient = useQueryClient()
     const [currentPage, setCurrentPage] = useState(0)
-    const [pageSize, setPageSize] = useState(10)
-    const [totalPage, setTotalPage] = useState(0)
-    const [totalElements, setTotalElements] = useState(0)
 
     const fetchUsers = async (page: number) => {
-        setLoading(true)
-        await api
-            .get(`/users?page=${page}`, {})
-            .then((response) => {
-                setUsers(response.data.resultData.content)
-                setTotalPage(response.data.resultData.pageInfo.totalPages)
-                setPageSize(response.data.resultData.pageInfo.pageSize)
-                setTotalElements(response.data.resultData.pageInfo.totalElements)
-                setLoading(false)
-            })
-            .catch((error) => {
-                alert('오류 발생했습니다. ' + error)
-                console.log(error)
-            })
+        const response = await api.get(`/users?page=${page}`)
+
+        return response.data.resultData
     }
+
+    const { data, isLoading } = useQuery({
+        queryKey: ['users', currentPage],
+        queryFn: () => fetchUsers(currentPage),
+    })
+
+    const deleteUserMutation = useMutation({
+        mutationFn: async (userId: number) => {
+            await api.delete(`/users/${userId}`)
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['users'] }).then(() => {})
+        },
+    })
 
     const handlePageChange = (page: { selected: number }) => {
-        const newPage = page.selected
-        setCurrentPage(newPage)
-        fetchUsers(newPage)
+        setCurrentPage(page.selected)
     }
 
-    const handleEdit = (user: UserInfo) => {
-        const updatedUser = {
-            ...user,
-        }
-        navigate(`/users/edit`, { state: updatedUser })
+    const handleEditPage = (user: UserInfo) => {
+        navigate(`/users/edit`, { state: user })
     }
 
-    const viewCreateUser = () => {
+    const handleCreateUserPage = () => {
         navigate(`/users/create`)
     }
 
-    const viewDashboard = () => {
+    const handelDashboardPage = () => {
         navigate(`/users/all`)
     }
 
-    const handleDelete = async (user: UserInfo) => {
+    const handleDelete = (user: UserInfo) => {
+        if (!user.userId) {
+            alert('해당 회원이 존재하지 않습니다.')
+            return
+        }
+
         if (!confirm(`${user.username}을(를) 탈퇴하시겠습니까?`)) return
-
-        await api
-            .delete(`/users/${user.userId}`)
-            .then(() => {
-                alert('사용자가 탈퇴되었습니다.')
-                fetchUsers(currentPage)
-            })
-            .catch((error) => {
-                console.error('탈퇴 실패:', error)
-                alert('탈퇴 중 오류가 발생했습니다.')
-            })
+        deleteUserMutation.mutate(user.userId)
     }
-
-    useEffect(() => {
-        fetchUsers(currentPage)
-    }, [currentPage])
 
     const genderOptions: Record<string, string> = { male: '남성', female: '여성' }
     const typeOptions: Record<string, string> = {
@@ -91,17 +73,19 @@ export default function UsersPage() {
             <Header />
             <h1 className="text-xl font-bold mb-4 mt-10">사용자 목록</h1>
             <div className="flex justify-between items-center">
-                <div>{loading ? <p>Loading...</p> : <p>(총 {totalElements}명)</p>}</div>
+                <div>
+                    {isLoading ? <p>Loading...</p> : <p>(총 {data?.pageInfo.totalElements}명)</p>}
+                </div>
                 <div>
                     <button
                         className="border p-2 px-3 py-1 mb-2 mr-2.5 rounded cursor-pointer hover:text-blue-600 transition"
-                        onClick={() => viewDashboard()}
+                        onClick={handelDashboardPage}
                     >
                         대시보드 구경하러 가기
                     </button>
                     <button
                         className="border p-2 px-3 py-1 mb-2 rounded cursor-pointer hover:text-blue-600 transition"
-                        onClick={() => viewCreateUser()}
+                        onClick={handleCreateUserPage}
                     >
                         사용자 추가
                     </button>
@@ -121,14 +105,14 @@ export default function UsersPage() {
                     </tr>
                 </thead>
                 <tbody>
-                    {loading ? (
+                    {isLoading ? (
                         <tr>
-                            <td colSpan={5} className="text-center p-4">
+                            <td colSpan={7} className="text-center p-4">
                                 Loading...
                             </td>
                         </tr>
                     ) : (
-                        users.map((user, index) => (
+                        data?.content.map((user: UserInfo, index: number) => (
                             <tr key={index} className="border">
                                 <td className="border p-2">{user.username}</td>
                                 <td className="border p-2">{user.nickName}</td>
@@ -141,7 +125,7 @@ export default function UsersPage() {
                                 <td className="border p-2 text-center">
                                     <ActionButton
                                         text="수정"
-                                        onClick={() => handleEdit(user)}
+                                        onClick={() => handleEditPage(user)}
                                         className="hover:text-blue-600"
                                     />
                                     <ActionButton
@@ -156,8 +140,8 @@ export default function UsersPage() {
                 </tbody>
             </table>
             <ReactPaginate
-                pageCount={totalPage}
-                pageRangeDisplayed={pageSize}
+                pageCount={data?.pageInfo.totalPages || 0}
+                pageRangeDisplayed={10}
                 marginPagesDisplayed={1}
                 breakLabel={'...'}
                 previousLabel={'<'}

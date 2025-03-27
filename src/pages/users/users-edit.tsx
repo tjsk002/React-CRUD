@@ -6,6 +6,7 @@ import FormButton from '@/pages/common/form-button.tsx'
 import Header from '@/pages/common/header.tsx'
 import { UserInfo, userInfoSchema } from '@/pages/users/schema/user-info-schema.tsx'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation } from '@tanstack/react-query'
 
 export default function UsersEditPage() {
     const navigate = useNavigate()
@@ -21,20 +22,24 @@ export default function UsersEditPage() {
         defaultValues: user,
     })
 
-    const onSubmit = async (data: UserInfo) => {
-        await api
-            .put(`/users/edit/${data.userId}`, {
+    const mutation = useMutation({
+        mutationFn: (data: UserInfo) =>
+            api.put(`/users/edit/${data.userId}`, {
                 userData: {
                     ...data,
                 },
-            })
-            .then(() => {
-                alert('사용자 정보가 성공적으로 수정되었습니다.')
-                navigate('/users/list')
-            })
-            .catch((errors) => {
-                alert('오류 발생' + errors)
-            })
+            }),
+        onSuccess: () => {
+            alert('사용자 정보가 성공적으로 수정되었습니다.')
+            navigate('/')
+        },
+        onError: (error) => {
+            alert('오류 발생 ' + error)
+        },
+    })
+
+    const onSubmit = (data: UserInfo) => {
+        mutation.mutate(data)
     }
 
     return (
