@@ -28,11 +28,10 @@ export default function Signup() {
                 role: 'ADMIN_ROLE',
                 password: password,
             })
-            .then((response) => {
-                alert(response.data.resultData.message)
+            .then(() => {
                 setErrorMessage('')
                 navigate('/auth/login')
-                alert('회원가입 성공했습니다')
+                alert('회원가입 성공했습니다. 로그인 페이지로 이동합니다.')
             })
             .catch((error) => {
                 setErrorMessage(error.response.data.resultData.message)
@@ -59,7 +58,7 @@ export default function Signup() {
                         className="p-3 border rounded-md"
                         required
                     />
-                    <p className="text-red-500">{emailError}</p>
+                    {emailError && <p className="text-red-500">{emailError}</p>}
                     <input
                         type="text"
                         placeholder="닉네임"
@@ -68,7 +67,7 @@ export default function Signup() {
                         className="p-3 border rounded-md"
                         required
                     />
-                    <p className="text-red-500">{nickNameError}</p>
+                    {nickNameError && <p className="text-red-500">{nickNameError}</p>}
                     <input
                         type="password"
                         placeholder="비밀번호"
@@ -85,8 +84,8 @@ export default function Signup() {
                         className="p-3 border rounded-md"
                         required
                     />
-                    <p className="text-red-500">{passwordError}</p>
-                    <p className="text-red-500">{errorMessage}</p>
+                    {passwordError && <p className="text-red-500">{passwordError}</p>}
+                    {errorMessage && <p className="text-red-500">{errorMessage}</p>}
                     <button
                         type="submit"
                         className="bg-green-500 text-white py-2 rounded-md hover:bg-green-600 transition"
@@ -94,7 +93,10 @@ export default function Signup() {
                         회원가입
                     </button>
                 </form>
-                <p className="text-center mt-4 text-gray-600" onClick={() => viewLogin()}>
+                <p
+                    className="text-center mt-4 text-gray-600 cursor-pointer"
+                    onClick={() => viewLogin()}
+                >
                     이미 계정이 있으신가요? 로그인
                 </p>
             </div>
