@@ -11,15 +11,17 @@ export default function Login() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        console.log('로그인 시도:', { email, password })
         await api
             .post('/auth/login', {
                 username: email,
                 password: password,
             })
             .then((response) => {
-                alert(response.data.resultData.message)
+                const accessToken = response.headers.authorization
+                localStorage.clear()
+                localStorage.setItem('accessToken', accessToken)
                 setErrorMessage('')
+                alert('정상적으로 로그인 되었습니다.')
                 navigate('/users/list')
             })
             .catch((error) => {
@@ -52,7 +54,7 @@ export default function Login() {
                         className="p-3 border rounded-md"
                         required
                     />
-                    <p className="text-red-500">{errorMessage}</p>
+                    {errorMessage && <p className="text-red-500">{errorMessage}</p>}
                     <button
                         type="submit"
                         className="bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition"

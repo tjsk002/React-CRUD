@@ -1,20 +1,48 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 
+import { api } from '@/api/axios.ts'
 import { Home } from 'lucide-react'
 
 export default function Header() {
     const navigate = useNavigate()
     const [user, setUser] = useState({ nickName: '홍길동' })
     const [isOpen, setIsOpen] = useState(false)
+    const fetchUser = () => {
+        // TODO API 내정보 가지고오기 만들어야함: 임시사용
+        setUser({
+            nickName: '홍길동',
+        })
+    }
 
-    const handleLogout = () => {
-        console.log('로그아웃 실행')
+    const handleLogout = async () => {
+        await api
+            .post(
+                '/auth/logout',
+                {},
+                {
+                    headers: {
+                        authorization: localStorage.getItem('accessToken'),
+                    },
+                }
+            )
+            .then(() => {
+                localStorage.removeItem('accessToken')
+                alert('로그아웃 되었습니다.')
+                navigate('/')
+            })
+            .catch((error) => {
+                alert(error)
+            })
     }
 
     const handleHome = () => {
         navigate('/users/list')
     }
+
+    useEffect(() => {
+        fetchUser()
+    }, [])
 
     return (
         <header className="w-full bg-gray-100 text-gray-800 p-4 flex justify-between items-center border-b border-gray-300">
