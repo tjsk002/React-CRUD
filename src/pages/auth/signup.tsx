@@ -25,7 +25,7 @@ export default function Signup() {
             .post(`/auth/signup`, {
                 username: email,
                 nickName: nickname,
-                role: 'ADMIN_ROLE',
+                role: 'ADMIN',
                 password: password,
             })
             .then(() => {
