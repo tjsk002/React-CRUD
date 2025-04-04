@@ -7,7 +7,11 @@ import { UserInfo } from '@/pages/users/schema/user-info-schema.tsx'
 const ENDPOINT_USERS = '/users'
 
 export const getUsers = async (page: number) => {
-    const response = await api.get(`${ENDPOINT_USERS}?page=${page}`)
+    const response = await api.get(`${ENDPOINT_USERS}`, {
+        params: {
+            page: page,
+        },
+    })
     return response.data.resultData
 }
 
