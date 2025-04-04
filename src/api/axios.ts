@@ -36,6 +36,17 @@ const refreshAccessToken = async () => {
         })
 }
 
+api.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('accessToken')
+        if (token) {
+            config.headers.authorization = token
+        }
+        return config
+    },
+    (error) => Promise.reject(error)
+)
+
 api.interceptors.response.use(
     (response) => response,
     async (error) => {
