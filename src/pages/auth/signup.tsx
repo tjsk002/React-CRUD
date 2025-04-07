@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
 
-import { createAdmin } from '@/api/auth.ts'
+import { createProcess } from '@/api/auth.ts'
 import { ErrorResponse } from '@/api/axios.ts'
 import { AdminInfo, adminInfoSchema } from '@/pages/auth/schema/auth-info-schema.tsx'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -25,7 +25,7 @@ export default function Signup() {
     })
 
     const mutation = useMutation({
-        mutationFn: createAdmin,
+        mutationFn: createProcess,
         onSuccess: () => {
             setErrorMessage('')
             navigate('/auth/login')
