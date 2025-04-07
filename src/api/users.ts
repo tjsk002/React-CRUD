@@ -21,7 +21,7 @@ export const deleteUser = async (userId: number) => {
 }
 
 export const editUser = async (data: UserInfo) => {
-    const response = await api.put(`${ENDPOINT_USERS}/edit/${data.userId}`, {
+    const response = await api.put(`${ENDPOINT_USERS}/${data.userId}`, {
         userData: {
             ...data,
         },
