@@ -21,14 +21,13 @@ const refreshAccessToken = async () => {
         )
         .then((response) => {
             const newAccessToken = response.headers.authorization
-            if (!newAccessToken) {
-                alert('로그아웃 되었습니다. 다시 로그인해주세요.')
-                window.location.href = '/auth/login'
-            }
 
             if (newAccessToken) {
                 localStorage.clear()
                 localStorage.setItem('accessToken', newAccessToken)
+            } else {
+                alert('로그아웃 되었습니다. 다시 로그인해주세요.')
+                window.location.href = '/auth/login'
             }
         })
         .catch((error) => {
@@ -51,6 +50,7 @@ api.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config
+        console.log(error.response)
         if (error.response?.status === 403 && !originalRequest._retry) {
             originalRequest._retry = true
             await refreshAccessToken()
