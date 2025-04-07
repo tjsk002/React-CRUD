@@ -58,3 +58,16 @@ api.interceptors.response.use(
         return Promise.reject(error)
     }
 )
+
+export interface ErrorResponse {
+    resultCode: string
+    resultMessage: string
+    resultData: {
+        message: string
+        errors?: {
+            nickName?: string
+            username?: string
+            password?: string
+        }
+    }
+}
