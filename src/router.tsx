@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router'
 
+import AuthLayout from '@/pages/auth/auth-layout.tsx'
 import Login from '@/pages/auth/login.tsx'
 import Main from '@/pages/auth/main.tsx'
 import Signup from '@/pages/auth/signup.tsx'
@@ -11,9 +12,11 @@ import UsersPage from '@/pages/users/users-page.tsx'
 export default function Router() {
     return (
         <Routes>
-            <Route path="" element={<Main />} />
-            <Route path="/auth/login" element={<Login />} />
-            <Route path="/auth/signup" element={<Signup />} />
+            <Route element={<AuthLayout />}>
+                <Route path="" element={<Main />} />
+                <Route path="/auth/login" element={<Login />} />
+                <Route path="/auth/signup" element={<Signup />} />
+            </Route>
             <Route path="/users/list" element={<UsersPage />} />
             <Route path="/users/create" element={<UsersCreatePage />} />
             <Route path="/users/edit" element={<UsersEditPage />} />
