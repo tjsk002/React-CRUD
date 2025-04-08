@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 
-import { api } from '@/api/axios.ts'
+import { logoutProcess } from '@/api/auth.ts'
+import { useMutation } from '@tanstack/react-query'
 import { Home } from 'lucide-react'
 
 export default function Header() {
@@ -15,25 +16,20 @@ export default function Header() {
         })
     }
 
-    const handleLogout = async () => {
-        await api
-            .post(
-                '/auth/logout',
-                {},
-                {
-                    headers: {
-                        authorization: localStorage.getItem('accessToken'),
-                    },
-                }
-            )
-            .then(() => {
-                localStorage.removeItem('accessToken')
-                alert('로그아웃 되었습니다.')
-                navigate('/')
-            })
-            .catch((error) => {
-                alert(error)
-            })
+    const mutation = useMutation({
+        mutationFn: logoutProcess,
+        onSuccess: () => {
+            localStorage.removeItem('accessToken')
+            alert('로그아웃 되었습니다.')
+            navigate('/')
+        },
+        onError: (error) => {
+            alert(error)
+        },
+    })
+
+    const onSubmit = () => {
+        mutation.mutate()
     }
 
     const handleHome = () => {
@@ -59,7 +55,7 @@ export default function Header() {
                 {isOpen && (
                     <div className="absolute right-0 mt-2 w-40 bg-white text-black rounded-md shadow-md border border-gray-200">
                         <button
-                            onClick={handleLogout}
+                            onClick={onSubmit}
                             className="block w-40 text-center px-5 py-3 text-sm hover:bg-gray-100 transition"
                         >
                             로그아웃
