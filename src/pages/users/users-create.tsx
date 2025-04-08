@@ -1,12 +1,14 @@
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
 
+import { ErrorResponse } from '@/api/axios.ts'
 import { createUser } from '@/api/users.ts'
 import FormButton from '@/pages/common/form-button.tsx'
 import Header from '@/pages/common/header.tsx'
 import { UserInfo, userInfoSchema } from '@/pages/users/schema/user-info-schema.tsx'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
+import { AxiosError } from 'axios'
 
 export default function UsersCreatePage() {
     const navigate = useNavigate()
@@ -29,8 +31,12 @@ export default function UsersCreatePage() {
             alert('사용자가 성공적으로 등록되었습니다.')
             navigate('/users/list')
         },
-        onError: (error) => {
-            alert('사용자 등록 중 오류가 발생했습니다. ' + error)
+        onError: (error: AxiosError<ErrorResponse>) => {
+            if (error?.response?.data.resultData.message) {
+                alert(error?.response?.data.resultData.message)
+            } else {
+                alert('오류가 발생했습니다. ' + error)
+            }
         },
     })
 
@@ -120,7 +126,6 @@ export default function UsersCreatePage() {
                                 rows={3}
                             ></textarea>
                         </div>
-
                         <FormButton mode="create" />
                     </form>
                 </div>

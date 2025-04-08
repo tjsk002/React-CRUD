@@ -1,12 +1,14 @@
 import { useForm } from 'react-hook-form'
 import { useLocation, useNavigate } from 'react-router'
 
+import { ErrorResponse } from '@/api/axios.ts'
 import { editUser } from '@/api/users.ts'
 import FormButton from '@/pages/common/form-button.tsx'
 import Header from '@/pages/common/header.tsx'
 import { UserInfo, userInfoSchema } from '@/pages/users/schema/user-info-schema.tsx'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
+import { AxiosError } from 'axios'
 
 export default function UsersEditPage() {
     const navigate = useNavigate()
@@ -28,8 +30,12 @@ export default function UsersEditPage() {
             alert('사용자 정보가 성공적으로 수정되었습니다.')
             navigate('/users/list')
         },
-        onError: (error) => {
-            alert('사용자 정보 수정 중 오류가 발생했습니다. ' + error)
+        onError: (error: AxiosError<ErrorResponse>) => {
+            if (error?.response?.data.resultData.message) {
+                alert(error?.response?.data.resultData.message)
+            } else {
+                alert('오류가 발생했습니다. ' + error)
+            }
         },
     })
 

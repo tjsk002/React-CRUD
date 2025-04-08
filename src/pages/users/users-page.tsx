@@ -2,12 +2,14 @@ import { useState } from 'react'
 import ReactPaginate from 'react-paginate'
 import { useNavigate } from 'react-router'
 
+import { ErrorResponse } from '@/api/axios.ts'
 import { deleteUser, getUsers } from '@/api/users.ts'
 import '@/assets/css/pagination.css'
 import ActionButton from '@/pages/common/action-button.tsx'
 import Header from '@/pages/common/header.tsx'
 import { UserInfo } from '@/pages/users/schema/user-info-schema.tsx'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { AxiosError } from 'axios'
 
 export default function UsersPage() {
     const initPage = 0
@@ -26,8 +28,12 @@ export default function UsersPage() {
             alert('사용자가 성공적으로 탈퇴되었습니다.')
             queryClient.invalidateQueries({ queryKey: ['users'] }).then(() => {})
         },
-        onError: (error) => {
-            alert('사용자 탈퇴 중 오류가 발생했습니다. ' + error)
+        onError: (error: AxiosError<ErrorResponse>) => {
+            if (error?.response?.data.resultData.message) {
+                alert(error?.response?.data.resultData.message)
+            } else {
+                alert('오류가 발생했습니다. ' + error)
+            }
         },
     })
 
