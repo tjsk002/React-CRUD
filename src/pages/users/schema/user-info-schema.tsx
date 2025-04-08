@@ -13,9 +13,17 @@ export const userInfoSchema = z.object({
         .max(12, {
             message: '5~12자리여야 합니다.',
         }),
-    nickName: z.string().min(1, {
-        message: '닉네임을 입력해주세요.',
-    }),
+    nickName: z
+        .string()
+        .min(1, {
+            message: '닉네임을 입력해주세요.',
+        })
+        .min(5, {
+            message: '5~12자리여야 합니다.',
+        })
+        .max(12, {
+            message: '5~12자리여야 합니다.',
+        }),
     gender: z.string().optional(),
     isActive: z.boolean().optional(),
     type: z.string({

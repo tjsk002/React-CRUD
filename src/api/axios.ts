@@ -50,7 +50,6 @@ api.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config
-        console.log(error.response)
         if (error.response?.status === 403 && !originalRequest._retry) {
             originalRequest._retry = true
             await refreshAccessToken()
@@ -58,3 +57,16 @@ api.interceptors.response.use(
         return Promise.reject(error)
     }
 )
+
+export interface ErrorResponse {
+    resultCode: string
+    resultMessage: string
+    resultData: {
+        message: string
+        errors?: {
+            nickName?: string
+            username?: string
+            password?: string
+        }
+    }
+}

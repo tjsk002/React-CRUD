@@ -1,32 +1,43 @@
 import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
 
-import { api } from '@/api/axios.ts'
+import { loginProcess } from '@/api/auth.ts'
+import { ErrorResponse } from '@/api/axios.ts'
+import { LoginInfo, loginInfoSchema } from '@/pages/auth/schema/auth-info-schema.tsx'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation } from '@tanstack/react-query'
+import { AxiosError } from 'axios'
 
 export default function Login() {
     const navigate = useNavigate()
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
-        await api
-            .post('/auth/login', {
-                username: email,
-                password: password,
-            })
-            .then((response) => {
-                const accessToken = response.headers.authorization
-                localStorage.clear()
-                localStorage.setItem('accessToken', accessToken)
-                setErrorMessage('')
-                alert('정상적으로 로그인 되었습니다.')
-                navigate('/users/list')
-            })
-            .catch((error) => {
-                setErrorMessage(error.response.data.resultData.message)
-            })
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<LoginInfo>({
+        resolver: zodResolver(loginInfoSchema),
+    })
+
+    const mutation = useMutation({
+        mutationFn: loginProcess,
+        onSuccess: (response) => {
+            const accessToken = response.headers.authorization
+            localStorage.clear()
+            localStorage.setItem('accessToken', accessToken)
+            setErrorMessage('')
+            alert('정상적으로 로그인 되었습니다.')
+            navigate('/users/list')
+        },
+        onError: (error: AxiosError<ErrorResponse>) => {
+            setErrorMessage(error.response?.data?.resultData?.message ?? '')
+        },
+    })
+
+    const onSubmit = (data: LoginInfo) => {
+        mutation.mutate(data)
     }
 
     function viewSignup() {
@@ -37,23 +48,27 @@ export default function Login() {
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
             <div className="bg-white p-8 rounded-xl shadow-lg w-96">
                 <h2 className="text-2xl font-bold text-center mb-4">로그인</h2>
-                <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
                     <input
+                        id="username"
+                        {...register('username')}
                         type="text"
-                        placeholder="이메일"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="아이디"
                         className="p-3 border rounded-md"
-                        required
                     />
+                    {errors?.username && (
+                        <p className="text-red-500">{errors?.username?.message}</p>
+                    )}
                     <input
+                        id="password"
+                        {...register('password')}
                         type="password"
                         placeholder="비밀번호"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
                         className="p-3 border rounded-md"
-                        required
                     />
+                    {errors?.password && (
+                        <p className="text-red-500">{errors?.password?.message}</p>
+                    )}
                     {errorMessage && <p className="text-red-500">{errorMessage}</p>}
                     <button
                         type="submit"

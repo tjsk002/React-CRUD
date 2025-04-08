@@ -1,44 +1,52 @@
 import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
 
-import { api } from '@/api/axios.ts'
+import { createProcess } from '@/api/auth.ts'
+import { ErrorResponse } from '@/api/axios.ts'
+import { AdminInfo, adminInfoSchema } from '@/pages/auth/schema/auth-info-schema.tsx'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation } from '@tanstack/react-query'
+import { AxiosError } from 'axios'
 
 export default function Signup() {
     const navigate = useNavigate()
-    const [email, setEmail] = useState('')
-    const [nickname, setNickName] = useState('')
-    const [password, setPassword] = useState('')
-    const [confirmPassword, setConfirmPassword] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
-
     const [emailError, setEmailError] = useState('')
     const [nickNameError, setNickNameError] = useState('')
     const [passwordError, setPasswordError] = useState('')
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
-        if (password !== confirmPassword) {
-            alert('비밀번호가 일치하지 않습니다!')
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<AdminInfo>({
+        resolver: zodResolver(adminInfoSchema),
+    })
+
+    const mutation = useMutation({
+        mutationFn: createProcess,
+        onSuccess: () => {
+            setErrorMessage('')
+            navigate('/auth/login')
+            alert('회원가입 성공했습니다. 로그인 페이지로 이동합니다.')
+        },
+        onError: (error: AxiosError<ErrorResponse>) => {
+            const res = error.response?.data?.resultData
+
+            setErrorMessage(res?.message ?? '알 수 없는 에러')
+            setNickNameError(res?.errors?.nickName ?? '')
+            setEmailError(res?.errors?.username ?? '')
+            setPasswordError(res?.errors?.password ?? '')
+        },
+    })
+
+    const onSubmit = (data: AdminInfo) => {
+        if (data.password != data.confirmPassword) {
+            setPasswordError('비밀번호가 일치하지 않습니다.')
             return
         }
-        await api
-            .post(`/auth/signup`, {
-                username: email,
-                nickName: nickname,
-                role: 'ADMIN',
-                password: password,
-            })
-            .then(() => {
-                setErrorMessage('')
-                navigate('/auth/login')
-                alert('회원가입 성공했습니다. 로그인 페이지로 이동합니다.')
-            })
-            .catch((error) => {
-                setErrorMessage(error.response.data.resultData.message)
-                setNickNameError(error.response.data.resultData.errors.nickName)
-                setEmailError(error.response.data.resultData.errors.username)
-                setPasswordError(error.response.data.resultData.errors.password)
-            })
+        mutation.mutate(data)
     }
 
     function viewLogin() {
@@ -49,41 +57,49 @@ export default function Signup() {
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
             <div className="bg-white p-8 rounded-xl shadow-lg w-96">
                 <h2 className="text-2xl font-bold text-center mb-4">회원가입</h2>
-                <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
                     <input
                         type="text"
-                        placeholder="이메일"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        id="nickname"
+                        placeholder="아이디"
+                        {...register('username')}
                         className="p-3 border rounded-md"
-                        required
                     />
+                    {errors?.username && (
+                        <p className="text-red-500">{errors?.username?.message}</p>
+                    )}
                     {emailError && <p className="text-red-500">{emailError}</p>}
                     <input
+                        id="nickName"
                         type="text"
                         placeholder="닉네임"
-                        value={nickname}
-                        onChange={(e) => setNickName(e.target.value)}
+                        {...register('nickName')}
                         className="p-3 border rounded-md"
-                        required
                     />
+                    {errors?.nickName && (
+                        <p className="text-red-500">{errors?.nickName?.message}</p>
+                    )}
                     {nickNameError && <p className="text-red-500">{nickNameError}</p>}
                     <input
+                        id="password"
                         type="password"
                         placeholder="비밀번호"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        {...register('password')}
                         className="p-3 border rounded-md"
-                        required
                     />
+                    {errors?.password && (
+                        <p className="text-red-500">{errors?.password?.message}</p>
+                    )}
                     <input
+                        id="confirmPassword"
                         type="password"
+                        {...register('confirmPassword')}
                         placeholder="비밀번호 확인"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
                         className="p-3 border rounded-md"
-                        required
                     />
+                    {errors?.confirmPassword && (
+                        <p className="text-red-500">{errors?.confirmPassword?.message}</p>
+                    )}
                     {passwordError && <p className="text-red-500">{passwordError}</p>}
                     {errorMessage && <p className="text-red-500">{errorMessage}</p>}
                     <button
