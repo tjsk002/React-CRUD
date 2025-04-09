@@ -105,6 +105,7 @@ export default function UsersPage() {
                         <th className="border p-2">유형</th>
                         <th className="border p-2">설명</th>
                         <th className="border p-2">가입일자</th>
+                        <th className="border p-2">탈퇴여부</th>
                         <th className="border p-2">수정/탈퇴</th>
                     </tr>
                 </thead>
@@ -137,6 +138,10 @@ export default function UsersPage() {
                                             minute: 'numeric',
                                             second: 'numeric',
                                         }).format(new Date(user.createdAt))}
+                                </td>
+                                <td className="border p-2">
+                                    {' '}
+                                    {user.deletedAt && user.deletedAt ? '탈퇴' : ''}
                                 </td>
                                 <td className="border p-2 text-center">
                                     <ActionButton

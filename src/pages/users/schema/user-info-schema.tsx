@@ -31,6 +31,7 @@ export const userInfoSchema = z.object({
     }),
     description: z.string().optional(),
     createdAt: z.string().optional(),
+    deletedAt: z.string().nullable().optional().readonly(),
 })
 
 export type UserInfo = z.infer<typeof userInfoSchema>
