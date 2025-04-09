@@ -13,11 +13,16 @@ export default function Header() {
 
     const [isOpen, setIsOpen] = useState(false)
     const fetchMy = () => {
-        const adminData = JSON.parse(localStorage.getItem('adminData') ?? '')
-        if (adminData != '') {
-            setAdmin({
-                username: adminData.username,
-            })
+        const stored = localStorage.getItem('adminData')
+        if (!stored) return
+
+        try {
+            const adminData = JSON.parse(stored)
+            if (adminData && adminData.username) {
+                setAdmin({ username: adminData.username })
+            }
+        } catch (error) {
+            console.error('adminData 파싱 실패:', error)
         }
     }
 
