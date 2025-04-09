@@ -7,16 +7,18 @@ import { Home } from 'lucide-react'
 
 export default function Header() {
     const navigate = useNavigate()
-    const [user, setUser] = useState({
+    const [admin, setAdmin] = useState({
         username: '',
     })
 
     const [isOpen, setIsOpen] = useState(false)
     const fetchMy = () => {
-        const adminData = JSON.parse(localStorage?.getItem('adminData') ?? '')
-        setUser({
-            username: adminData.username,
-        })
+        const adminData = JSON.parse(localStorage.getItem('adminData') ?? '')
+        if (adminData != '') {
+            setAdmin({
+                username: adminData.username,
+            })
+        }
     }
 
     const mutation = useMutation({
@@ -37,6 +39,10 @@ export default function Header() {
         mutation.mutate()
     }
 
+    const handleMy = () => {
+        navigate('/my')
+    }
+
     const handleHome = () => {
         navigate('/users/list')
     }
@@ -55,10 +61,16 @@ export default function Header() {
                     onClick={() => setIsOpen(!isOpen)}
                     className="text-gray-800 bg-gray-200 w-40 py-3 text-sm rounded-md hover:bg-gray-300 transition text-center"
                 >
-                    관리자 {user.username}님
+                    관리자 {admin.username}님
                 </button>
                 {isOpen && (
                     <div className="absolute right-0 mt-2 w-40 bg-white text-black rounded-md shadow-md border border-gray-200">
+                        <button
+                            onClick={handleMy}
+                            className="block w-40 text-center px-5 py-3 text-sm hover:bg-gray-100 transition"
+                        >
+                            내 정보
+                        </button>
                         <button
                             onClick={onSubmit}
                             className="block w-40 text-center px-5 py-3 text-sm hover:bg-gray-100 transition"
