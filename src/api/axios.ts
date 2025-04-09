@@ -25,13 +25,12 @@ const refreshAccessToken = async () => {
             if (newAccessToken) {
                 localStorage.clear()
                 localStorage.setItem('accessToken', newAccessToken)
-            } else {
-                alert('로그아웃 되었습니다. 다시 로그인해주세요.')
-                window.location.href = '/auth/login'
             }
         })
         .catch((error) => {
             console.log(`error ${error}`)
+            alert('접속시간이 만료되었습니다. 다시 로그인 해주세요.')
+            window.location.href = '/auth/login'
         })
 }
 
@@ -46,13 +45,23 @@ api.interceptors.request.use(
     (error) => Promise.reject(error)
 )
 
+let isRefreshing = false
 api.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config
-        if (error.response?.status === 403 && !originalRequest._retry) {
+        if (error.response?.status === 403 && !originalRequest._retry && !isRefreshing) {
             originalRequest._retry = true
-            await refreshAccessToken()
+            isRefreshing = true
+            try {
+                await refreshAccessToken()
+                isRefreshing = false
+                return axios(originalRequest)
+            } catch (e) {
+                isRefreshing = false
+                window.location.href = '/auth/login'
+                return Promise.reject(e)
+            }
         }
         return Promise.reject(error)
     }
