@@ -124,7 +124,50 @@ export default function UsersEditPage() {
                                 rows={3}
                             ></textarea>
                         </div>
-
+                        <div className="mb-4">
+                            <label className="block text-gray-700" htmlFor="createdAt">
+                                가입일자
+                            </label>
+                            <input
+                                id="createdAt"
+                                defaultValue={
+                                    user.createdAt
+                                        ? new Intl.DateTimeFormat('ko-KR', {
+                                              year: 'numeric',
+                                              month: 'long',
+                                              day: 'numeric',
+                                              hour: 'numeric',
+                                              minute: 'numeric',
+                                              second: 'numeric',
+                                          }).format(new Date(user.createdAt))
+                                        : ''
+                                }
+                                readOnly
+                                className="w-full p-2 border rounded mt-1 text-gray-500 cursor-not-allowed"
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <label className="block text-gray-700" htmlFor="deletedAt">
+                                탈퇴일자
+                            </label>
+                            <input
+                                id="deletedAt"
+                                defaultValue={
+                                    user.deletedAt && user.deletedAt
+                                        ? new Intl.DateTimeFormat('ko-KR', {
+                                              year: 'numeric',
+                                              month: 'long',
+                                              day: 'numeric',
+                                              hour: 'numeric',
+                                              minute: 'numeric',
+                                              second: 'numeric',
+                                          }).format(new Date(user.deletedAt))
+                                        : ''
+                                }
+                                readOnly
+                                className="w-full p-2 border rounded mt-1 text-gray-500 cursor-not-allowed"
+                            />
+                        </div>
                         <FormButton mode="edit" />
                     </form>
                 </div>

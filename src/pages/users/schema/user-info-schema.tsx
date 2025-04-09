@@ -30,6 +30,8 @@ export const userInfoSchema = z.object({
         message: '유형을 선택해주세요.',
     }),
     description: z.string().optional(),
+    createdAt: z.string().optional(),
+    deletedAt: z.string().nullable().optional().readonly(),
 })
 
 export type UserInfo = z.infer<typeof userInfoSchema>
