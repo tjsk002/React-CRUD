@@ -27,7 +27,7 @@ export default function UsersEditPage() {
     const mutation = useMutation({
         mutationFn: editUser,
         onSuccess: () => {
-            alert('사용자 정보가 성공적으로 수정되었습니다.')
+            alert('회원 정보가 성공적으로 수정되었습니다.')
             navigate('/users/list')
         },
         onError: (error: AxiosError<ErrorResponse>) => {
@@ -48,7 +48,7 @@ export default function UsersEditPage() {
             <Header />
             <div className="min-h-screen bg-gray-100 flex items-center justify-center">
                 <div className="w-full max-w-2xl bg-white p-8 shadow-lg rounded-lg border">
-                    <h2 className="text-3xl font-bold mb-6 text-center">사용자 수정</h2>
+                    <h2 className="text-3xl font-bold mb-6 text-center">회원 수정</h2>
 
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <input type="hidden" {...register('userId')} />

@@ -25,7 +25,7 @@ export default function UsersPage() {
     const deleteUserMutation = useMutation({
         mutationFn: deleteUser,
         onSuccess: () => {
-            alert('사용자가 성공적으로 탈퇴되었습니다.')
+            alert('회원이 성공적으로 탈퇴되었습니다.')
             queryClient.invalidateQueries({ queryKey: ['users'] }).then(() => {})
         },
         onError: (error: AxiosError<ErrorResponse>) => {
@@ -74,7 +74,7 @@ export default function UsersPage() {
     return (
         <div className="p-4">
             <Header />
-            <h1 className="text-xl font-bold mb-4 mt-10">사용자 목록</h1>
+            <h1 className="text-xl font-bold mb-4 mt-10">회원 목록</h1>
             <div className="flex justify-between items-center">
                 <div>
                     {isLoading ? <p>Loading...</p> : <p>(총 {data?.pageInfo.totalElements}명)</p>}
@@ -90,7 +90,7 @@ export default function UsersPage() {
                         className="border p-2 px-3 py-1 mb-2 rounded cursor-pointer hover:text-blue-600 transition"
                         onClick={handleCreateUserPage}
                     >
-                        사용자 추가
+                        회원 추가
                     </button>
                 </div>
             </div>
