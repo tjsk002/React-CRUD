@@ -104,6 +104,7 @@ export default function UsersPage() {
                         <th className="border p-2">상태</th>
                         <th className="border p-2">유형</th>
                         <th className="border p-2">설명</th>
+                        <th className="border p-2">가입일자</th>
                         <th className="border p-2">수정/탈퇴</th>
                     </tr>
                 </thead>
@@ -125,6 +126,18 @@ export default function UsersPage() {
                                 <td className="border p-2">{user.isActive ? '활성' : '비활성'}</td>
                                 <td className="border p-2">{typeOptions[user.type] || '기타'}</td>
                                 <td className="border p-2">{user.description}</td>
+                                <td className="border p-2">
+                                    {' '}
+                                    {user.createdAt &&
+                                        new Intl.DateTimeFormat('ko-KR', {
+                                            year: 'numeric',
+                                            month: 'long',
+                                            day: 'numeric',
+                                            hour: 'numeric',
+                                            minute: 'numeric',
+                                            second: 'numeric',
+                                        }).format(new Date(user.createdAt))}
+                                </td>
                                 <td className="border p-2 text-center">
                                     <ActionButton
                                         text="수정"
