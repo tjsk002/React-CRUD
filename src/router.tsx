@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router'
 import AuthLayout from '@/pages/auth/auth-layout.tsx'
 import Login from '@/pages/auth/login.tsx'
 import Main from '@/pages/auth/main.tsx'
+import MyPage from '@/pages/auth/my-page.tsx'
 import Signup from '@/pages/auth/signup.tsx'
 import All from '@/pages/users/dashboard/all.tsx'
 import UsersCreatePage from '@/pages/users/users-create.tsx'
@@ -17,6 +18,7 @@ export default function Router() {
                 <Route path="/auth/login" element={<Login />} />
                 <Route path="/auth/signup" element={<Signup />} />
             </Route>
+            <Route path="/my" element={<MyPage />} />
             <Route path="/users/list" element={<UsersPage />} />
             <Route path="/users/create" element={<UsersCreatePage />} />
             <Route path="/users/edit" element={<UsersEditPage />} />

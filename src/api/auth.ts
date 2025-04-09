@@ -32,3 +32,11 @@ export const logoutProcess = async () => {
         }
     )
 }
+
+export const myInfoProcess = async () => {
+    return await api.get(`/my`, {
+        headers: {
+            authorization: localStorage.getItem('accessToken'),
+        },
+    })
+}

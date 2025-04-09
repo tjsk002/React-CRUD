@@ -28,7 +28,7 @@ export default function UsersCreatePage() {
     const mutation = useMutation({
         mutationFn: createUser,
         onSuccess: () => {
-            alert('사용자가 성공적으로 등록되었습니다.')
+            alert('회원이 성공적으로 등록되었습니다.')
             navigate('/users/list')
         },
         onError: (error: AxiosError<ErrorResponse>) => {
@@ -49,7 +49,7 @@ export default function UsersCreatePage() {
             <Header />
             <div className="min-h-screen bg-gray-100 flex items-center justify-center">
                 <div className="w-full max-w-2xl bg-white p-8 shadow-lg rounded-lg border">
-                    <h2 className="text-3xl font-bold mb-6 text-center">사용자 추가</h2>
+                    <h2 className="text-3xl font-bold mb-6 text-center">회원 추가</h2>
 
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="mb-4">
