@@ -24,9 +24,11 @@ export default function Login() {
     const mutation = useMutation({
         mutationFn: loginProcess,
         onSuccess: (response) => {
-            const accessToken = response.headers.authorization
             localStorage.clear()
+            const accessToken = response.headers.authorization
+            const adminData = response.data.resultData.data
             localStorage.setItem('accessToken', accessToken)
+            localStorage.setItem('adminData', JSON.stringify(adminData))
             setErrorMessage('')
             alert('정상적으로 로그인 되었습니다.')
             navigate('/users/list')
