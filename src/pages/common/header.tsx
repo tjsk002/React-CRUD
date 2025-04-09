@@ -7,19 +7,24 @@ import { Home } from 'lucide-react'
 
 export default function Header() {
     const navigate = useNavigate()
-    const [user, setUser] = useState({ nickName: '홍길동' })
+    const [user, setUser] = useState({
+        username: '',
+    })
+
     const [isOpen, setIsOpen] = useState(false)
-    const fetchUser = () => {
-        // TODO API 내정보 가지고오기 만들어야함: 임시사용
+    const fetchMy = () => {
+        const adminData = JSON.parse(localStorage?.getItem('adminData') ?? '')
         setUser({
-            nickName: '홍길동',
+            username: adminData.username,
         })
     }
 
     const mutation = useMutation({
         mutationFn: logoutProcess,
         onSuccess: () => {
+            localStorage.clear()
             localStorage.removeItem('accessToken')
+            localStorage.removeItem('refreshToken')
             alert('로그아웃 되었습니다.')
             navigate('/')
         },
@@ -37,7 +42,7 @@ export default function Header() {
     }
 
     useEffect(() => {
-        fetchUser()
+        fetchMy()
     }, [])
 
     return (
@@ -50,7 +55,7 @@ export default function Header() {
                     onClick={() => setIsOpen(!isOpen)}
                     className="text-gray-800 bg-gray-200 w-40 py-3 text-sm rounded-md hover:bg-gray-300 transition text-center"
                 >
-                    관리자 {user.nickName}님
+                    관리자 {user.username}님
                 </button>
                 {isOpen && (
                     <div className="absolute right-0 mt-2 w-40 bg-white text-black rounded-md shadow-md border border-gray-200">
