@@ -29,7 +29,7 @@ export default function UsersCreatePage() {
         mutationFn: createUser,
         onSuccess: () => {
             alert('회원이 성공적으로 등록되었습니다.')
-            navigate('/users/list')
+            navigate('/admin/users/list')
         },
         onError: (error: AxiosError<ErrorResponse>) => {
             if (error?.response?.data.resultData.message) {

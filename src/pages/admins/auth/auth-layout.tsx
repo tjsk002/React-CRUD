@@ -4,7 +4,7 @@ import { Outlet } from 'react-router'
 const AuthLayout = () => {
     useEffect(() => {
         if (localStorage.getItem('accessToken')) {
-            window.location.href = '/users/list'
+            window.location.href = '/admin/users/list'
         }
     }, [])
 

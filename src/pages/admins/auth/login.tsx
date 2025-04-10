@@ -31,7 +31,7 @@ export default function Login() {
             localStorage.setItem('adminData', JSON.stringify(adminData))
             setErrorMessage('')
             alert('정상적으로 로그인 되었습니다.')
-            navigate('/users/list')
+            navigate('/admin/users/list')
         },
         onError: (error: AxiosError<ErrorResponse>) => {
             setErrorMessage(error.response?.data?.resultData?.message ?? '')

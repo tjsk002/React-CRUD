@@ -30,7 +30,7 @@ const refreshAccessToken = async () => {
         .catch((error) => {
             console.log(`error ${error}`)
             alert('접속시간이 만료되었습니다. 다시 로그인 해주세요.')
-            window.location.href = '/admins/auth/login'
+            window.location.href = '/admin/auth/login'
         })
 }
 

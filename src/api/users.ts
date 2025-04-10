@@ -4,7 +4,7 @@
 import { api } from '@/api/axios.ts'
 import { UserInfo } from '@/pages/admins/users/schema/user-info-schema.tsx'
 
-const ENDPOINT_USERS = '/users'
+const ENDPOINT_USERS = '/admin/users'
 
 export const getUsers = async (page: number) => {
     const response = await api.get(`${ENDPOINT_USERS}`, {

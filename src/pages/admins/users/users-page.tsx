@@ -42,15 +42,15 @@ export default function UsersPage() {
     }
 
     const handleEditPage = (user: UserInfo) => {
-        navigate(`/users/edit`, { state: user })
+        navigate(`/admin/users/edit`, { state: user })
     }
 
     const handleCreateUserPage = () => {
-        navigate(`/users/create`)
+        navigate(`/admin/users/create`)
     }
 
     const handelDashboardPage = () => {
-        navigate(`/users/all`)
+        navigate(`/admin/users/all`)
     }
 
     const handleDelete = (user: UserInfo) => {
