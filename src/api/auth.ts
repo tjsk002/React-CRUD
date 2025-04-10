@@ -1,5 +1,5 @@
 import { api } from '@/api/axios.ts'
-import { AdminInfo, LoginInfo } from '@/pages/auth/schema/auth-info-schema.tsx'
+import { AdminInfo, LoginInfo } from '@/pages/admins/auth/schema/auth-info-schema.tsx'
 
 const ENDPOINT_AUTH = '/auth'
 const ROLE_ADMIN = 'ADMIN'

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router'
 
 import { createProcess } from '@/api/auth.ts'
 import { ErrorResponse } from '@/api/axios.ts'
-import { AdminInfo, adminInfoSchema } from '@/pages/auth/schema/auth-info-schema.tsx'
+import { AdminInfo, adminInfoSchema } from '@/pages/admins/auth/schema/auth-info-schema.tsx'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
@@ -28,7 +28,7 @@ export default function Signup() {
         mutationFn: createProcess,
         onSuccess: () => {
             setErrorMessage('')
-            navigate('/auth/login')
+            navigate('/admin/auth/login')
             alert('회원가입 성공했습니다. 로그인 페이지로 이동합니다.')
         },
         onError: (error: AxiosError<ErrorResponse>) => {
@@ -50,7 +50,7 @@ export default function Signup() {
     }
 
     function viewLogin() {
-        navigate(`/auth/login`)
+        navigate(`/admin/auth/login`)
     }
 
     return (

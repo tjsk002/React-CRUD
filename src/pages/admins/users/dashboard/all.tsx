@@ -1,5 +1,5 @@
-import DashboardView from '@/pages/users/dashboard/dashboard.tsx'
-import Statistics from '@/pages/users/dashboard/statistics.tsx'
+import DashboardView from '@/pages/admins/users/dashboard/dashboard.tsx'
+import Statistics from '@/pages/admins/users/dashboard/statistics.tsx'
 
 export default function All() {
     return (

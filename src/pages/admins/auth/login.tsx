@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router'
 
 import { loginProcess } from '@/api/auth.ts'
 import { ErrorResponse } from '@/api/axios.ts'
-import { LoginInfo, loginInfoSchema } from '@/pages/auth/schema/auth-info-schema.tsx'
+import { LoginInfo, loginInfoSchema } from '@/pages/admins/auth/schema/auth-info-schema.tsx'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
@@ -43,7 +43,7 @@ export default function Login() {
     }
 
     function viewSignup() {
-        navigate(`/auth/signup`)
+        navigate(`/admin/auth/signup`)
     }
 
     return (
