@@ -1,13 +1,13 @@
 import { Navigate, Outlet } from 'react-router'
 
-const AuthLayout = () => {
+const AdminLayout = () => {
     const token = localStorage.getItem('accessToken')
 
-    if (token) {
-        return <Navigate to="/admin/users/list" />
+    if (!token) {
+        return <Navigate to="/" />
     }
 
     return <Outlet />
 }
 
-export default AuthLayout
+export default AdminLayout

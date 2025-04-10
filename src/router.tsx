@@ -1,9 +1,9 @@
 import { Route, Routes } from 'react-router'
 
+import AdminLayout from '@/pages/admins/auth/admin-layout.tsx'
 import AuthLayout from '@/pages/admins/auth/auth-layout.tsx'
 import Login from '@/pages/admins/auth/login.tsx'
 import Main from '@/pages/admins/auth/main.tsx'
-// import Main from '@/pages/auth/main.tsx'
 import MyPage from '@/pages/admins/auth/my-page.tsx'
 import Signup from '@/pages/admins/auth/signup.tsx'
 import All from '@/pages/admins/users/dashboard/all.tsx'
@@ -21,11 +21,13 @@ export default function Router() {
                 <Route path="/admin/auth/login" element={<Login />} />
                 <Route path="/admin/auth/signup" element={<Signup />} />
             </Route>
-            <Route path="/admin/my" element={<MyPage />} />
-            <Route path="/admin/users/list" element={<UsersPage />} />
-            <Route path="/admin/users/create" element={<UsersCreatePage />} />
-            <Route path="/admin/users/edit" element={<UsersEditPage />} />
-            <Route path="/admin/users/all" element={<All />} />
+            <Route element={<AdminLayout />}>
+                <Route path="/admin/my" element={<MyPage />} />
+                <Route path="/admin/users/list" element={<UsersPage />} />
+                <Route path="/admin/users/create" element={<UsersCreatePage />} />
+                <Route path="/admin/users/edit" element={<UsersEditPage />} />
+                <Route path="/admin/users/all" element={<All />} />
+            </Route>
         </Routes>
     )
 }
