@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 
-import { logoutProcess } from '@/api/auth.ts'
+import { logoutProcess } from '@/api/admin/auth.ts'
 import { useMutation } from '@tanstack/react-query'
 import { Home } from 'lucide-react'
 
