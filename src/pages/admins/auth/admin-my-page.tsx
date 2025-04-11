@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { myInfoProcess } from '@/api/auth.ts'
+import { myInfoProcess } from '@/api/admin/auth.ts'
 import Header from '@/pages/admins/common/header.tsx'
 
 type MyInfo = {
