@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
 
-import { createProcess } from '@/api/auth.ts'
+import { createProcess } from '@/api/admin/auth.ts'
 import { ErrorResponse } from '@/api/axios.ts'
 import { AdminInfo, adminInfoSchema } from '@/pages/admins/auth/schema/auth-info-schema.tsx'
 import { zodResolver } from '@hookform/resolvers/zod'

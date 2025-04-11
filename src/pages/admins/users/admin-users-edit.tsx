@@ -1,8 +1,8 @@
 import { useForm } from 'react-hook-form'
 import { useLocation, useNavigate } from 'react-router'
 
+import { editUser } from '@/api/admin/users.ts'
 import { ErrorResponse } from '@/api/axios.ts'
-import { editUser } from '@/api/users.ts'
 import FormButton from '@/pages/admins/common/form-button.tsx'
 import Header from '@/pages/admins/common/header.tsx'
 import { UserInfo, userInfoSchema } from '@/pages/admins/users/schema/user-info-schema.tsx'
