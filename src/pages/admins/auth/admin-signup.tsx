@@ -9,7 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 
-export default function Signup() {
+export default function AdminSignup() {
     const navigate = useNavigate()
     const [errorMessage, setErrorMessage] = useState('')
     const [emailError, setEmailError] = useState('')

@@ -11,7 +11,7 @@ import { UserInfo } from '@/pages/admins/users/schema/user-info-schema.tsx'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 
-export default function UsersPage() {
+export default function AdminUsersPage() {
     const initPage = 0
     const navigate = useNavigate()
     const queryClient = useQueryClient()

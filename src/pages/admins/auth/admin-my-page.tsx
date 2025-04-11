@@ -12,7 +12,7 @@ type MyInfo = {
     createdAt: string
 }
 
-export default function MyPage() {
+export default function AdminMyPage() {
     const { register, reset } = useForm<MyInfo>()
     const fetchMy = async () => {
         await myInfoProcess()

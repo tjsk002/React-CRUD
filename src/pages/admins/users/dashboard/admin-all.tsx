@@ -1,7 +1,7 @@
 import DashboardView from '@/pages/admins/users/dashboard/dashboard.tsx'
 import Statistics from '@/pages/admins/users/dashboard/statistics.tsx'
 
-export default function All() {
+export default function AdminAll() {
     return (
         <div className="bg-gray-200 p-8">
             <DashboardView></DashboardView>

@@ -10,7 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 
-export default function UsersEditPage() {
+export default function AdminUsersEditPage() {
     const navigate = useNavigate()
     const location = useLocation()
     const user = location.state

@@ -10,7 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 
-export default function UsersCreatePage() {
+export default function AdminUsersCreatePage() {
     const navigate = useNavigate()
 
     const {

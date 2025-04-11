@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router'
 
-export default function Main() {
+export default function AdminMain() {
     const navigate = useNavigate()
 
     function viewLogin() {
