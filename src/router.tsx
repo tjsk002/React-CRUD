@@ -1,29 +1,29 @@
 import { Route, Routes } from 'react-router'
 
+import AdminAuthLayout from '@/pages/admins/auth/admin-auth-layout.tsx'
 import AdminLayout from '@/pages/admins/auth/admin-layout.tsx'
-import AuthLayout from '@/pages/admins/auth/auth-layout.tsx'
-import Login from '@/pages/admins/auth/login.tsx'
-import Main from '@/pages/admins/auth/main.tsx'
-import MyPage from '@/pages/admins/auth/my-page.tsx'
-import Signup from '@/pages/admins/auth/signup.tsx'
-import All from '@/pages/admins/users/dashboard/all.tsx'
-import UsersCreatePage from '@/pages/admins/users/users-create.tsx'
-import UsersEditPage from '@/pages/admins/users/users-edit.tsx'
-import UsersPage from '@/pages/admins/users/users-page.tsx'
+import AdminLogin from '@/pages/admins/auth/admin-login.tsx'
+import AdminMain from '@/pages/admins/auth/admin-main.tsx'
+import AdminMyPage from '@/pages/admins/auth/admin-my-page.tsx'
+import AdminSignup from '@/pages/admins/auth/admin-signup.tsx'
+import UsersCreatePage from '@/pages/admins/users/admin-users-create.tsx'
+import UsersEditPage from '@/pages/admins/users/admin-users-edit.tsx'
+import AdminUsersPage from '@/pages/admins/users/admin-users-page.tsx'
+import All from '@/pages/admins/users/dashboard/admin-all.tsx'
 import MovieMain from '@/pages/movie/main.tsx'
 
 export default function Router() {
     return (
         <Routes>
-            <Route element={<AuthLayout />}>
+            <Route element={<AdminAuthLayout />}>
                 <Route path="/" element={<MovieMain />} />
-                <Route path="/admin" element={<Main />} />
-                <Route path="/admin/auth/login" element={<Login />} />
-                <Route path="/admin/auth/signup" element={<Signup />} />
+                <Route path="/admin" element={<AdminMain />} />
+                <Route path="/admin/auth/login" element={<AdminLogin />} />
+                <Route path="/admin/auth/signup" element={<AdminSignup />} />
             </Route>
             <Route element={<AdminLayout />}>
-                <Route path="/admin/my" element={<MyPage />} />
-                <Route path="/admin/users/list" element={<UsersPage />} />
+                <Route path="/admin/my" element={<AdminMyPage />} />
+                <Route path="/admin/users/list" element={<AdminUsersPage />} />
                 <Route path="/admin/users/create" element={<UsersCreatePage />} />
                 <Route path="/admin/users/edit" element={<UsersEditPage />} />
                 <Route path="/admin/users/all" element={<All />} />
