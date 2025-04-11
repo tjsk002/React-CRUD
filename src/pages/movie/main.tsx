@@ -86,10 +86,27 @@ export default function DailyBoxOfficeWithHeader() {
                                 </div>
                                 <div className="text-right text-sm">
                                     <p className="text-gray-700">
-                                        📈 관객수: {parseInt(movie.audiCnt).toLocaleString()}명
+                                        관객수: {parseInt(movie.audiCnt).toLocaleString()}명
                                     </p>
-                                    <p className="text-gray-500">
+                                    <p className="text-gray-700">
                                         누적: {parseInt(movie.audiAcc).toLocaleString()}명
+                                    </p>
+                                    <p>
+                                        {movie.rankOldAndNew === 'NEW' && (
+                                            <span className="px-2 py-0.5 bg-green-200 text-green-800 rounded text-xs">
+                                                신규
+                                            </span>
+                                        )}
+                                    </p>
+                                    <p className="text-gray-700">
+                                        <span>
+                                            스크린: {parseInt(movie.scrnCnt).toLocaleString()}개
+                                        </span>
+                                    </p>
+                                    <p className="text-gray-700">
+                                        <span>
+                                            상영: {parseInt(movie.showCnt).toLocaleString()}회
+                                        </span>
                                     </p>
                                     <p className="text-gray-400">
                                         순위 변화:{' '}
