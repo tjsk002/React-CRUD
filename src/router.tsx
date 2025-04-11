@@ -10,11 +10,13 @@ import UsersCreatePage from '@/pages/admins/users/admin-users-create.tsx'
 import UsersEditPage from '@/pages/admins/users/admin-users-edit.tsx'
 import AdminUsersPage from '@/pages/admins/users/admin-users-page.tsx'
 import All from '@/pages/admins/users/dashboard/admin-all.tsx'
+import MovieMain from '@/pages/movie/main.tsx'
 
 export default function Router() {
     return (
         <Routes>
             <Route element={<AdminAuthLayout />}>
+                <Route path="/" element={<MovieMain />} />
                 <Route path="/admin" element={<AdminMain />} />
                 <Route path="/admin/auth/login" element={<AdminLogin />} />
                 <Route path="/admin/auth/signup" element={<AdminSignup />} />
