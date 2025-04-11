@@ -41,7 +41,7 @@ export default function DailyBoxOfficeWithHeader() {
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
             <Header />
-            <main className="pt-20 px-6 py-8 flex-grow">
+            <main className="pt-20 px-40 py-8 flex-grow">
                 <div className="mb-6">
                     <h2 className="text-2xl font-bold text-gray-800">일별 박스오피스</h2>
                     <p className="text-gray-600 mt-1">날짜 기준으로 인기 영화 확인하기</p>
