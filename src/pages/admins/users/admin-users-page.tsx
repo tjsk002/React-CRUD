@@ -5,13 +5,13 @@ import { useNavigate } from 'react-router'
 import { ErrorResponse } from '@/api/axios.ts'
 import { deleteUser, getUsers } from '@/api/users.ts'
 import '@/assets/css/pagination.css'
-import ActionButton from '@/pages/common/action-button.tsx'
-import Header from '@/pages/common/header.tsx'
-import { UserInfo } from '@/pages/users/schema/user-info-schema.tsx'
+import ActionButton from '@/pages/admins/common/action-button.tsx'
+import Header from '@/pages/admins/common/header.tsx'
+import { UserInfo } from '@/pages/admins/users/schema/user-info-schema.tsx'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 
-export default function UsersPage() {
+export default function AdminUsersPage() {
     const initPage = 0
     const navigate = useNavigate()
     const queryClient = useQueryClient()
@@ -42,15 +42,15 @@ export default function UsersPage() {
     }
 
     const handleEditPage = (user: UserInfo) => {
-        navigate(`/users/edit`, { state: user })
+        navigate(`/admin/users/edit`, { state: user })
     }
 
     const handleCreateUserPage = () => {
-        navigate(`/users/create`)
+        navigate(`/admin/users/create`)
     }
 
     const handelDashboardPage = () => {
-        navigate(`/users/all`)
+        navigate(`/admin/users/all`)
     }
 
     const handleDelete = (user: UserInfo) => {

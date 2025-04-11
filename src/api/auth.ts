@@ -1,7 +1,7 @@
 import { api } from '@/api/axios.ts'
-import { AdminInfo, LoginInfo } from '@/pages/auth/schema/auth-info-schema.tsx'
+import { AdminInfo, LoginInfo } from '@/pages/admins/auth/schema/auth-info-schema.tsx'
 
-const ENDPOINT_AUTH = '/auth'
+const ENDPOINT_AUTH = '/admin/auth'
 const ROLE_ADMIN = 'ADMIN'
 
 export const createProcess = async (data: AdminInfo) => {
@@ -34,7 +34,7 @@ export const logoutProcess = async () => {
 }
 
 export const myInfoProcess = async () => {
-    return await api.get(`/my`, {
+    return await api.get(`/admin/my`, {
         headers: {
             authorization: localStorage.getItem('accessToken'),
         },

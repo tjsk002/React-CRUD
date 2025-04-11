@@ -45,11 +45,11 @@ export default function Header() {
     }
 
     const handleMy = () => {
-        navigate('/my')
+        navigate('/admin/my')
     }
 
     const handleHome = () => {
-        navigate('/users/list')
+        navigate('/admin/users/list')
     }
 
     useEffect(() => {

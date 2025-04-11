@@ -4,12 +4,12 @@ import { useNavigate } from 'react-router'
 
 import { loginProcess } from '@/api/auth.ts'
 import { ErrorResponse } from '@/api/axios.ts'
-import { LoginInfo, loginInfoSchema } from '@/pages/auth/schema/auth-info-schema.tsx'
+import { LoginInfo, loginInfoSchema } from '@/pages/admins/auth/schema/auth-info-schema.tsx'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 
-export default function Login() {
+export default function AdminLogin() {
     const navigate = useNavigate()
     const [errorMessage, setErrorMessage] = useState('')
 
@@ -31,7 +31,7 @@ export default function Login() {
             localStorage.setItem('adminData', JSON.stringify(adminData))
             setErrorMessage('')
             alert('정상적으로 로그인 되었습니다.')
-            navigate('/users/list')
+            navigate('/admin/users/list')
         },
         onError: (error: AxiosError<ErrorResponse>) => {
             setErrorMessage(error.response?.data?.resultData?.message ?? '')
@@ -43,7 +43,7 @@ export default function Login() {
     }
 
     function viewSignup() {
-        navigate(`/auth/signup`)
+        navigate(`/admin/auth/signup`)
     }
 
     return (

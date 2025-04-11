@@ -1,19 +1,17 @@
 import { useForm } from 'react-hook-form'
-import { useLocation, useNavigate } from 'react-router'
+import { useNavigate } from 'react-router'
 
 import { ErrorResponse } from '@/api/axios.ts'
-import { editUser } from '@/api/users.ts'
-import FormButton from '@/pages/common/form-button.tsx'
-import Header from '@/pages/common/header.tsx'
-import { UserInfo, userInfoSchema } from '@/pages/users/schema/user-info-schema.tsx'
+import { createUser } from '@/api/users.ts'
+import FormButton from '@/pages/admins/common/form-button.tsx'
+import Header from '@/pages/admins/common/header.tsx'
+import { UserInfo, userInfoSchema } from '@/pages/admins/users/schema/user-info-schema.tsx'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 
-export default function UsersEditPage() {
+export default function AdminUsersCreatePage() {
     const navigate = useNavigate()
-    const location = useLocation()
-    const user = location.state
 
     const {
         register,
@@ -21,14 +19,17 @@ export default function UsersEditPage() {
         formState: { errors },
     } = useForm<UserInfo>({
         resolver: zodResolver(userInfoSchema),
-        defaultValues: user,
+        defaultValues: {
+            isActive: true,
+            gender: 'female',
+        },
     })
 
     const mutation = useMutation({
-        mutationFn: editUser,
+        mutationFn: createUser,
         onSuccess: () => {
-            alert('회원 정보가 성공적으로 수정되었습니다.')
-            navigate('/users/list')
+            alert('회원이 성공적으로 등록되었습니다.')
+            navigate('/admin/users/list')
         },
         onError: (error: AxiosError<ErrorResponse>) => {
             if (error?.response?.data.resultData.message) {
@@ -48,10 +49,9 @@ export default function UsersEditPage() {
             <Header />
             <div className="min-h-screen bg-gray-100 flex items-center justify-center">
                 <div className="w-full max-w-2xl bg-white p-8 shadow-lg rounded-lg border">
-                    <h2 className="text-3xl font-bold mb-6 text-center">회원 수정</h2>
+                    <h2 className="text-3xl font-bold mb-6 text-center">회원 추가</h2>
 
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <input type="hidden" {...register('userId')} />
                         <div className="mb-4">
                             <label className="block text-gray-700" htmlFor="username">
                                 * 이름
@@ -60,6 +60,7 @@ export default function UsersEditPage() {
                                 id="username"
                                 {...register('username')}
                                 className="w-full p-2 border rounded mt-1"
+                                placeholder="5~12자리 입력"
                             />
                             <p className="text-red-500">{errors.username?.message}</p>
                         </div>
@@ -72,6 +73,7 @@ export default function UsersEditPage() {
                                 id="nickName"
                                 {...register('nickName')}
                                 className="w-full p-2 border rounded mt-1"
+                                placeholder="닉네임 입력"
                             />
                             <p className="text-red-500">{errors.nickName?.message}</p>
                         </div>
@@ -87,7 +89,6 @@ export default function UsersEditPage() {
                                     <input type="radio" value="male" {...register('gender')} /> Male
                                 </label>
                             </div>
-                            <p className="text-red-500">{errors.gender?.message}</p>
                         </div>
 
                         <div className="mb-4">
@@ -121,54 +122,11 @@ export default function UsersEditPage() {
                                 id="description"
                                 {...register('description')}
                                 className="w-full p-2 border rounded mt-1"
+                                placeholder="설명 입력"
                                 rows={3}
                             ></textarea>
                         </div>
-                        <div className="mb-4">
-                            <label className="block text-gray-700" htmlFor="createdAt">
-                                가입일자
-                            </label>
-                            <input
-                                id="createdAt"
-                                defaultValue={
-                                    user.createdAt
-                                        ? new Intl.DateTimeFormat('ko-KR', {
-                                              year: 'numeric',
-                                              month: 'long',
-                                              day: 'numeric',
-                                              hour: 'numeric',
-                                              minute: 'numeric',
-                                              second: 'numeric',
-                                          }).format(new Date(user.createdAt))
-                                        : ''
-                                }
-                                readOnly
-                                className="w-full p-2 border rounded mt-1 text-gray-500 cursor-not-allowed"
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label className="block text-gray-700" htmlFor="deletedAt">
-                                탈퇴일자
-                            </label>
-                            <input
-                                id="deletedAt"
-                                defaultValue={
-                                    user.deletedAt && user.deletedAt
-                                        ? new Intl.DateTimeFormat('ko-KR', {
-                                              year: 'numeric',
-                                              month: 'long',
-                                              day: 'numeric',
-                                              hour: 'numeric',
-                                              minute: 'numeric',
-                                              second: 'numeric',
-                                          }).format(new Date(user.deletedAt))
-                                        : ''
-                                }
-                                readOnly
-                                className="w-full p-2 border rounded mt-1 text-gray-500 cursor-not-allowed"
-                            />
-                        </div>
-                        <FormButton mode="edit" />
+                        <FormButton mode="create" />
                     </form>
                 </div>
             </div>

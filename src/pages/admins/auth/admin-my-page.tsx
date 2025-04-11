@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { myInfoProcess } from '@/api/auth.ts'
-import Header from '@/pages/common/header.tsx'
+import Header from '@/pages/admins/common/header.tsx'
 
 type MyInfo = {
     id: number
@@ -12,7 +12,7 @@ type MyInfo = {
     createdAt: string
 }
 
-export default function MyPage() {
+export default function AdminMyPage() {
     const { register, reset } = useForm<MyInfo>()
     const fetchMy = async () => {
         await myInfoProcess()

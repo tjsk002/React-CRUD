@@ -2,9 +2,9 @@
  * axios로 api 요청 후 usersApiData 반환
  */
 import { api } from '@/api/axios.ts'
-import { UserInfo } from '@/pages/users/schema/user-info-schema.tsx'
+import { UserInfo } from '@/pages/admins/users/schema/user-info-schema.tsx'
 
-const ENDPOINT_USERS = '/users'
+const ENDPOINT_USERS = '/admin/users'
 
 export const getUsers = async (page: number) => {
     const response = await api.get(`${ENDPOINT_USERS}`, {
