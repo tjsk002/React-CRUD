@@ -10,6 +10,7 @@ import UsersCreatePage from '@/pages/admins/users/admin-users-create.tsx'
 import UsersEditPage from '@/pages/admins/users/admin-users-edit.tsx'
 import AdminUsersPage from '@/pages/admins/users/admin-users-page.tsx'
 import All from '@/pages/admins/users/dashboard/admin-all.tsx'
+import Login from '@/pages/auth/login.tsx'
 import Signup from '@/pages/auth/signup.tsx'
 import MovieMain from '@/pages/movie/main.tsx'
 
@@ -30,6 +31,7 @@ export default function Router() {
                 <Route path="/admin/users/all" element={<All />} />
             </Route>
             <Route path="/auth/signup" element={<Signup />} />
+            <Route path="/auth/login" element={<Login />} />
         </Routes>
     )
 }
