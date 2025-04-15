@@ -98,7 +98,16 @@ export default function AdminUsersEditPage() {
                                 </label>
                             </div>
                         </div>
-
+                        <div className="mb-4">
+                            <label className="block text-gray-700">* 권한</label>
+                            <select
+                                {...register('role')}
+                                className="w-full p-2 border rounded mt-1"
+                            >
+                                <option value="USER">USER</option>
+                            </select>
+                            <p className="text-red-500">{errors.role?.message}</p>
+                        </div>
                         <div className="mb-4">
                             <label className="block text-gray-700">* 유형</label>
                             <select
@@ -112,7 +121,17 @@ export default function AdminUsersEditPage() {
                             </select>
                             <p className="text-red-500">{errors.type?.message}</p>
                         </div>
-
+                        <div className="mb-4">
+                            <label className="block text-gray-700" htmlFor="password">
+                                * 임시 비밀번호
+                            </label>
+                            <input
+                                id="password"
+                                {...register('password')}
+                                className="w-full p-2 border rounded mt-1"
+                            />
+                            <p className="text-red-500">{errors.password?.message}</p>
+                        </div>
                         <div className="mb-4">
                             <label className="block text-gray-700" htmlFor="description">
                                 설명

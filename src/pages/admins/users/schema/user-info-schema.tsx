@@ -25,6 +25,8 @@ export const userInfoSchema = z.object({
             message: '5~12자리여야 합니다.',
         }),
     gender: z.string().optional(),
+    role: z.string(),
+    password: z.string(),
     isActive: z.boolean().optional(),
     type: z.string({
         message: '유형을 선택해주세요.',
