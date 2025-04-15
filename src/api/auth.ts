@@ -19,9 +19,8 @@ export const createProcess = async (data: AuthInfo) => {
 }
 
 export const loginProcess = async (data: LoginInfo) => {
-    const response = await api.post(`${ENDPOINT_AUTH}/login`, {
+    return await api.post(`${ENDPOINT_AUTH}/login`, {
         username: data.username,
         password: data.password,
     })
-    return response.data.resultData
 }

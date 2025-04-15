@@ -17,7 +17,14 @@ export default function Login() {
     const mutation = useMutation({
         mutationFn: loginProcess,
         onSuccess: (response) => {
-            console.log(response)
+            localStorage.clear()
+            const accessToken = response.headers.authorization
+            const userData = response.data.resultData.data
+            localStorage.setItem('accessToken', accessToken)
+            localStorage.setItem('userData', JSON.stringify(userData))
+            setErrorMessage('')
+            alert('정상적으로 로그인 되었습니다.')
+            navigate('/')
         },
         onError: (error: AxiosError<ErrorResponse>) => {
             console.log(error)
