@@ -2,9 +2,9 @@ import { Navigate, Outlet } from 'react-router'
 
 const AdminAuthLayout = () => {
     const token = localStorage.getItem('accessToken')
-    const storedData = localStorage.getItem('adminData')
+    const storedData = localStorage.getItem('userData')
     if (token && storedData) {
-        return <Navigate to="/admin/users/list" />
+        return <Navigate to="/" />
     }
 
     return <Outlet />
