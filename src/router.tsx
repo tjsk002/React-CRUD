@@ -18,7 +18,6 @@ export default function Router() {
     return (
         <Routes>
             <Route element={<AdminAuthLayout />}>
-                <Route path="/" element={<MovieMain />} />
                 <Route path="/admin" element={<AdminMain />} />
                 <Route path="/admin/auth/login" element={<AdminLogin />} />
                 <Route path="/admin/auth/signup" element={<AdminSignup />} />
@@ -30,6 +29,7 @@ export default function Router() {
                 <Route path="/admin/users/edit" element={<UsersEditPage />} />
                 <Route path="/admin/users/all" element={<All />} />
             </Route>
+            <Route path="/" element={<MovieMain />} />
             <Route path="/auth/signup" element={<Signup />} />
             <Route path="/auth/login" element={<Login />} />
         </Routes>
