@@ -13,7 +13,7 @@ import All from '@/pages/admins/users/dashboard/admin-all.tsx'
 import AuthLayout from '@/pages/auth/auth-layout.tsx'
 import Login from '@/pages/auth/login.tsx'
 import Signup from '@/pages/auth/signup.tsx'
-import MovieMain from '@/pages/movie/main.tsx'
+import MovieMain from '@/pages/service/main.tsx'
 
 export default function Router() {
     return (
