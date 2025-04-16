@@ -13,7 +13,7 @@ import All from '@/pages/admins/users/dashboard/admin-all.tsx'
 import AuthLayout from '@/pages/auth/auth-layout.tsx'
 import Login from '@/pages/auth/login.tsx'
 import Signup from '@/pages/auth/signup.tsx'
-import MovieMain from '@/pages/service/main.tsx'
+import MovieMain from '@/pages/service/movie.tsx'
 
 export default function Router() {
     return (
@@ -30,7 +30,7 @@ export default function Router() {
                 <Route path="/admin/users/edit" element={<UsersEditPage />} />
                 <Route path="/admin/users/all" element={<All />} />
             </Route>
-            <Route path="/" element={<MovieMain />} />
+            <Route path="/movie" element={<MovieMain />} />
             <Route element={<AuthLayout />}>
                 <Route path="/auth/signup" element={<Signup />} />
                 <Route path="/auth/login" element={<Login />} />
