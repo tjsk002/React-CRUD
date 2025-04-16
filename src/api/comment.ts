@@ -13,7 +13,6 @@ export const getComments = async (date: string) => {
 }
 
 export const createComment = async (data: CommentInfo) => {
-    console.log(data)
     const response = await api.post(`${ENDPOINT_API_USERS}/comments`, {
         ...data,
     })
