@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router'
 
+import Index from '@/pages'
 import AdminAuthLayout from '@/pages/admins/auth/admin-auth-layout.tsx'
 import AdminLayout from '@/pages/admins/auth/admin-layout.tsx'
 import AdminLogin from '@/pages/admins/auth/admin-login.tsx'
@@ -30,6 +31,7 @@ export default function Router() {
                 <Route path="/admin/users/edit" element={<UsersEditPage />} />
                 <Route path="/admin/users/all" element={<All />} />
             </Route>
+            <Route path="/" element={<Index />} />
             <Route path="/movie" element={<MovieMain />} />
             <Route element={<AuthLayout />}>
                 <Route path="/auth/signup" element={<Signup />} />
