@@ -3,6 +3,8 @@ import { useState } from 'react'
 import { getMovies } from '@/api/movie.ts'
 import Footer from '@/pages/common/footer.tsx'
 import Header from '@/pages/common/header.tsx'
+import SubHeader from '@/pages/common/sub-header.tsx'
+import CommentList from '@/pages/service/comment-list.tsx'
 import CommentForm from '@/pages/service/comment.tsx'
 import { useQuery } from '@tanstack/react-query'
 
@@ -27,7 +29,7 @@ type movieListInfo = {
     showCnt: string // 상영한 횟수
 }
 
-export default function DailyBoxOfficeWithHeader() {
+export default function Movie() {
     const today = new Date()
     today.setDate(today.getDate() - 1)
     const yesterday = today.toISOString().slice(0, 10)
@@ -42,6 +44,7 @@ export default function DailyBoxOfficeWithHeader() {
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
             <Header />
+            <SubHeader />
             <div className="flex flex-grow pt-20 px-40 gap-8">
                 <main className="w-2/3">
                     <div className="mb-6">
@@ -126,6 +129,7 @@ export default function DailyBoxOfficeWithHeader() {
                 <aside className="w-1/3">
                     <div className="sticky top-24 animate-slide-up transition-all duration-500">
                         <CommentForm targetDate={date} />
+                        <CommentList targetDate={date} />
                     </div>
                 </aside>
             </div>
