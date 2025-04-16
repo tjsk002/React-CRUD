@@ -24,7 +24,7 @@ export default function Header() {
                 })
             }
         } catch (error) {
-            console.error('userData 파싱 실패:', error)
+            alert('userData parse error' + error)
         }
     }
 
@@ -41,7 +41,7 @@ export default function Header() {
             <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-sm h-14 flex items-center justify-between px-40">
                 <h1 className="text-xl font-bold text-blue-600">
                     <a onClick={viewHome} className="cursor-default">
-                        🎬 MovieYou
+                        FeedSpot
                     </a>
                 </h1>
                 {user.nickName == '' ? <AuthButton /> : <AccountMenu user={user} />}
