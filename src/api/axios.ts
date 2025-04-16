@@ -57,10 +57,10 @@ api.interceptors.response.use(
                 await refreshAccessToken()
                 isRefreshing = false
                 return axios(originalRequest)
-            } catch (e) {
+            } catch (error) {
                 isRefreshing = false
                 window.location.href = '/auth/login'
-                return Promise.reject(e)
+                return Promise.reject(error)
             }
         }
         return Promise.reject(error)

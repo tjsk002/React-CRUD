@@ -27,7 +27,7 @@ export default function Login() {
             navigate('/')
         },
         onError: (error: AxiosError<ErrorResponse>) => {
-            console.log(error)
+            alert(error.message)
             setErrorMessage(error.response?.data?.resultData?.message ?? '')
         },
     })
