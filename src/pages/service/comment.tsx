@@ -1,8 +1,9 @@
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { createComment } from '@/api/comment.ts'
 import { CommentInfo } from '@/pages/service/schema/comment-info-schema.tsx'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 type CommentProps = {
     targetDate: string
@@ -10,6 +11,10 @@ type CommentProps = {
 
 export default function CommentForm({ targetDate }: CommentProps) {
     const { register, handleSubmit, reset } = useForm<CommentInfo>()
+    const queryClient = useQueryClient()
+    const [userData, setUserData] = useState({
+        nickName: '',
+    })
     const mutation = useMutation({
         mutationFn: createComment,
         onSuccess: () => {
@@ -17,6 +22,11 @@ export default function CommentForm({ targetDate }: CommentProps) {
             reset({
                 content: '',
             })
+            queryClient
+                .invalidateQueries({
+                    queryKey: ['comments', targetDate],
+                })
+                .then()
         },
         onError: (error) => {
             alert(error)
@@ -28,6 +38,19 @@ export default function CommentForm({ targetDate }: CommentProps) {
             targetDate,
         })
     }
+    useEffect(() => {
+        const storedData = localStorage.getItem('userData')
+        if (storedData) {
+            try {
+                const parsedData = JSON.parse(storedData)
+                setUserData({
+                    nickName: parsedData.nickName,
+                })
+            } catch (error) {
+                alert(error)
+            }
+        }
+    }, [])
 
     return (
         <form
@@ -36,12 +59,14 @@ export default function CommentForm({ targetDate }: CommentProps) {
         >
             <h4 className="text-sm font-semibold text-gray-700">💬 댓글 작성</h4>
             <div className="flex flex-col sm:flex-row gap-2">
-                <input
-                    type="text"
-                    value="dlatjsdk"
-                    readOnly
-                    className="flex-shrink-0 sm:w-32 border border-gray-200 bg-gray-100 rounded-md px-3 py-2 text-sm text-gray-500 cursor-not-allowed"
-                />
+                {userData?.nickName && (
+                    <input
+                        type="text"
+                        value={userData.nickName}
+                        readOnly
+                        className="flex-shrink-0 sm:w-32 border border-gray-200 bg-gray-100 rounded-md px-3 py-2 text-sm text-gray-500 cursor-not-allowed"
+                    />
+                )}
                 <input
                     type="text"
                     placeholder="내용을 입력하세요"
