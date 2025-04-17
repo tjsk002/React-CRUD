@@ -1,17 +1,21 @@
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router'
 
+import { ErrorResponse } from '@/api/axios.ts'
 import { createComment } from '@/api/comment.ts'
 import { CommentInfo } from '@/pages/service/schema/comment-info-schema.tsx'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { AxiosError } from 'axios'
 
 type CommentProps = {
     targetDate: string
 }
 
-export default function CommentForm({ targetDate }: CommentProps) {
+export default function CommentCreate({ targetDate }: CommentProps) {
     const { register, handleSubmit, reset } = useForm<CommentInfo>()
     const queryClient = useQueryClient()
+    const navigate = useNavigate()
     const [userData, setUserData] = useState({
         nickName: '',
     })
@@ -28,8 +32,13 @@ export default function CommentForm({ targetDate }: CommentProps) {
                 })
                 .then()
         },
-        onError: (error) => {
-            alert(error)
+        onError: (error: AxiosError<ErrorResponse>) => {
+            if (error.response?.status === 403) {
+                alert('로그인이 필요합니다. 로그인 페이지로 이동합니다.')
+                navigate('/auth/login')
+            } else {
+                alert('댓글 등록에 실패했습니다.' + error)
+            }
         },
     })
     const onSubmit = (data: CommentInfo) => {
