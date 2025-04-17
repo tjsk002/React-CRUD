@@ -4,8 +4,8 @@ import { getMovies } from '@/api/movie.ts'
 import Footer from '@/pages/common/footer.tsx'
 import Header from '@/pages/common/header.tsx'
 import SubHeader from '@/pages/common/sub-header.tsx'
+import CommentCreate from '@/pages/service/comment-create.tsx'
 import CommentList from '@/pages/service/comment-list.tsx'
-import CommentForm from '@/pages/service/comment.tsx'
 import { useQuery } from '@tanstack/react-query'
 
 type movieListInfo = {
@@ -128,7 +128,7 @@ export default function Movie() {
                 </main>
                 <aside className="w-1/3">
                     <div className="sticky top-24 animate-slide-up transition-all duration-500">
-                        <CommentForm targetDate={date} />
+                        <CommentCreate targetDate={date} />
                         <CommentList targetDate={date} />
                     </div>
                 </aside>
