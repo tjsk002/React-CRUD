@@ -22,7 +22,7 @@ export default function Header() {
                 setAdmin({ username: adminData.username })
             }
         } catch (error) {
-            console.error('adminData 파싱 실패:', error)
+            alert('adminData parse error' + error)
         }
     }
 

@@ -35,7 +35,7 @@ export default function AdminMyPage() {
                 })
             })
             .catch((error) => {
-                console.log(error)
+                alert(error.message)
             })
     }
 

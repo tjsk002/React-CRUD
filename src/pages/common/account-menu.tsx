@@ -17,7 +17,7 @@ export default function AccountMenu({ user }: AccountMenuProps) {
                 onClick={() => setIsOpen(!isOpen)}
                 className="text-gray-800 w-40 py-3 text-sm rounded-md bg-gray-100 hover:bg-gray-300 transition text-center cursor-default"
             >
-                {user.username} ({user.nickName}) 님
+                {user.nickName} 님
             </div>
             {isOpen && (
                 <div className="absolute right-0 mt-2 w-40 bg-white text-black rounded-md shadow-md border border-gray-200">
