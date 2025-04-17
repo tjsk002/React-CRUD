@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router'
 
 import { ErrorResponse } from '@/api/axios.ts'
 import { createComment } from '@/api/comment.ts'
-import { CommentInfo } from '@/pages/service/schema/comment-info-schema.tsx'
+import { CommentInfo, commentInfoSchema } from '@/pages/service/schema/comment-info-schema.tsx'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 
@@ -13,7 +14,18 @@ type CommentProps = {
 }
 
 export default function CommentCreate({ targetDate }: CommentProps) {
-    const { register, handleSubmit, reset } = useForm<CommentInfo>()
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm<CommentInfo>({
+        resolver: zodResolver(commentInfoSchema),
+        defaultValues: {
+            targetDate: targetDate,
+            content: '',
+        },
+    })
     const queryClient = useQueryClient()
     const navigate = useNavigate()
     const [userData, setUserData] = useState({
@@ -89,6 +101,9 @@ export default function CommentCreate({ targetDate }: CommentProps) {
                     등록
                 </button>
             </div>
+            {errors.content && (
+                <p className="text-sm text-red-500 mt-1">{errors.content.message}</p>
+            )}
         </form>
     )
 }
