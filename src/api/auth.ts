@@ -24,3 +24,15 @@ export const loginProcess = async (data: LoginInfo) => {
         password: data.password,
     })
 }
+
+export const logoutProcess = async () => {
+    return await api.post(
+        `${ENDPOINT_AUTH}/logout`,
+        {},
+        {
+            headers: {
+                authorization: localStorage.getItem('accessToken'),
+            },
+        }
+    )
+}
