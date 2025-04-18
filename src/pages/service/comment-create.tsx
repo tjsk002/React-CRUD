@@ -37,6 +37,7 @@ export default function CommentCreate({ targetDate }: CommentProps) {
             alert('댓글이 정상적으로 등록되었습니다.')
             reset({
                 content: '',
+                targetDate: targetDate,
             })
             queryClient
                 .invalidateQueries({
