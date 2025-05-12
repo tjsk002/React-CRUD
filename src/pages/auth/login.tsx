@@ -27,8 +27,12 @@ export default function Login() {
             navigate('/')
         },
         onError: (error: AxiosError<ErrorResponse>) => {
-            alert(error.message)
-            setErrorMessage(error.response?.data?.resultData?.message ?? '')
+            if (error.status === 404) {
+                alert('서버 오류가 발생하였습니다. API 연동을 해주세요.')
+            } else {
+                alert(error.message)
+                setErrorMessage(error.response?.data?.resultData?.message ?? '')
+            }
         },
     })
     const onSubmit = (data: LoginInfo) => {
