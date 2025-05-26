@@ -55,6 +55,9 @@ export default function Header() {
                         <a href="/board" className="hover:text-blue-600 transition-colors">
                             자유 게시물
                         </a>
+                        <a href="/notice" className="hover:text-blue-600 transition-colors">
+                            공지사항
+                        </a>
                     </nav>
                 </div>
                 {user.nickName == '' ? <AuthButton /> : <AccountMenu user={user} />}

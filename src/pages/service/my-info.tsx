@@ -14,7 +14,6 @@ export default function Profile() {
         gender: '남성',
         is_active: true,
         nick_name: 'Chulsoo',
-        password: '*****', // 비밀번호는 보안상 숨김
         role: 'Admin',
         type: 'Regular',
         user_name: '김철수',

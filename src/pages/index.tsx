@@ -28,12 +28,26 @@ const posts = [
     },
 ]
 
+const notices = [
+    {
+        id: 1,
+        title: '새로운 이벤트가 시작되었습니다!',
+        url: '/events',
+    },
+    {
+        id: 2,
+        title: '사이트 점검 예정 안내',
+        url: '/maintenance',
+    },
+]
+
 export default function Index() {
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
             <Header />
-            <main className="pt-28 px-40 flex-grow">
-                <section className="mb-12">
+            <main className="pt-28 px-40 flex-grow flex flex-row">
+                {/* 게시물 섹션 */}
+                <section className="mb-12 w-2/3 pr-8">
                     <h1 className="text-xl font-semibold text-gray-800 mb-8">인기 게시물</h1>
                     <ul className="divide-y divide-gray-200 bg-white shadow-sm rounded-lg overflow-hidden">
                         {posts.map((post) => (
@@ -57,9 +71,7 @@ export default function Index() {
                             </li>
                         ))}
                     </ul>
-                </section>
-                <section>
-                    <h1 className="text-xl font-semibold text-gray-800 mb-6">최신 게시물</h1>
+                    <h1 className="text-xl font-semibold text-gray-800 mb-6 mt-6">최신 게시물</h1>
                     <ul className="divide-y divide-gray-200 bg-white shadow-sm rounded-lg overflow-hidden">
                         {posts.map((post) => (
                             <li
@@ -82,6 +94,20 @@ export default function Index() {
                             </li>
                         ))}
                     </ul>
+                </section>
+
+                {/* 공지사항 섹션 */}
+                <section className="w-1/3">
+                    <h1 className="text-xl font-semibold text-gray-800 mb-8">공지사항</h1>
+                    <div className="bg-white p-6 shadow-sm">
+                        <div className="space-y-2">
+                            {notices.map((notice) => (
+                                <div key={notice.id} className="text-blue-500 hover:underline">
+                                    <a href={notice.url}>{notice.title}</a>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </section>
             </main>
             <Footer />

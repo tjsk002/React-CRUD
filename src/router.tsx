@@ -17,6 +17,7 @@ import Signup from '@/pages/auth/signup.tsx'
 import BoardMain from '@/pages/service/board.tsx'
 import MovieMain from '@/pages/service/movie.tsx'
 import MyInfo from '@/pages/service/my-info.tsx'
+import Notice from '@/pages/service/notice.tsx'
 
 export default function Router() {
     return (
@@ -40,6 +41,8 @@ export default function Router() {
             <Route path="/movie" element={<MovieMain />} />
             <Route path="/board" element={<BoardMain />} />
             <Route path="/my-info" element={<MyInfo />} />
+            <Route path="/notice" element={<Notice />} />
+
             <Route element={<AuthLayout />}>
                 <Route path="/auth/signup" element={<Signup />} />
                 <Route path="/auth/login" element={<Login />} />
