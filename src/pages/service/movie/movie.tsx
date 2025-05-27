@@ -3,8 +3,8 @@ import { useState } from 'react'
 import { getMovies } from '@/api/movie.ts'
 import Footer from '@/pages/common/footer.tsx'
 import Header from '@/pages/common/header.tsx'
-import CommentCreate from '@/pages/service/comment-create.tsx'
-import CommentList from '@/pages/service/comment-list.tsx'
+import CommentCreate from '@/pages/service/movie/comment-create.tsx'
+import CommentList from '@/pages/service/movie/comment-list.tsx'
 import { useQuery } from '@tanstack/react-query'
 
 type movieListInfo = {
