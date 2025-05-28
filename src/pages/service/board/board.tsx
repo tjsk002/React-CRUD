@@ -41,6 +41,10 @@ export default function Board() {
         navigate('/auth/login')
     }
 
+    function boardDetail(boardId: number) {
+        navigate(`/board/${boardId}`)
+    }
+
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
             <Header />
@@ -79,6 +83,7 @@ export default function Board() {
                         {data?.content?.map((board: boardListInfo) => (
                             <li
                                 key={board.id}
+                                onClick={() => boardDetail(board.id)}
                                 className="px-6 py-4 hover:bg-gray-100 cursor-pointer transition-colors"
                             >
                                 <div className="flex justify-between items-center">

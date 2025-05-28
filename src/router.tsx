@@ -16,6 +16,7 @@ import Login from '@/pages/auth/login.tsx'
 import Signup from '@/pages/auth/signup.tsx'
 import BoardMain from '@/pages/service/board/board.tsx'
 import BoardCreate from '@/pages/service/board/create.tsx'
+import BoardDetail from '@/pages/service/board/detail.tsx'
 import MovieMain from '@/pages/service/movie/movie.tsx'
 import MyInfo from '@/pages/service/my-info.tsx'
 import Notice from '@/pages/service/notice.tsx'
@@ -45,6 +46,7 @@ export default function Router() {
 
             <Route path="/board" element={<BoardMain />} />
             <Route path="/board/create" element={<BoardCreate />} />
+            <Route path="/board/:boardId" element={<BoardDetail />} />
 
             <Route element={<AuthLayout />}>
                 <Route path="/auth/signup" element={<Signup />} />

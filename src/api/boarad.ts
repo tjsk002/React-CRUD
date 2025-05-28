@@ -18,7 +18,10 @@ export const createBoard = async (data: CreateBoardInfo) => {
     const response = await api.post(`${ENDPOINT_BOARDS}`, {
         ...data,
     })
-    console.log('-- response')
-    console.log(response)
     return response.data
+}
+
+export const getBoardDetail = async (boardId: number) => {
+    const response = await api.get(`${ENDPOINT_BOARDS}/${boardId}`)
+    return response.data.resultData.data
 }
