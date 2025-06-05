@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from 'react-router'
 
-const AdminAuthLayout = () => {
+const GuestOnlyRoute = () => {
     const token = localStorage.getItem('accessToken')
     const storedData = localStorage.getItem('userData')
     if (token && storedData) {
@@ -10,4 +10,4 @@ const AdminAuthLayout = () => {
     return <Outlet />
 }
 
-export default AdminAuthLayout
+export default GuestOnlyRoute
