@@ -3,9 +3,8 @@ import { useState } from 'react'
 import { getMovies } from '@/api/movie.ts'
 import Footer from '@/pages/common/footer.tsx'
 import Header from '@/pages/common/header.tsx'
-import SubHeader from '@/pages/common/sub-header.tsx'
-import CommentCreate from '@/pages/service/comment-create.tsx'
-import CommentList from '@/pages/service/comment-list.tsx'
+import CommentCreate from '@/pages/service/movie/comment-create.tsx'
+import CommentList from '@/pages/service/movie/comment-list.tsx'
 import { useQuery } from '@tanstack/react-query'
 
 type movieListInfo = {
@@ -44,11 +43,10 @@ export default function Movie() {
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
             <Header />
-            <SubHeader />
             <div className="flex flex-grow pt-20 px-40 gap-8">
                 <main className="w-2/3">
                     <div className="mb-6">
-                        <h2 className="text-2xl font-bold text-gray-800">일별 박스오피스</h2>
+                        <h2 className="text-xl font-bold text-gray-800">일별 박스오피스</h2>
                         <p className="text-gray-600 mt-1">날짜 기준으로 인기 영화 확인하기</p>
                     </div>
                     <div className="mb-6 flex flex-col sm:flex-row gap-2 sm:gap-4 sm:items-center">

@@ -14,11 +14,17 @@ import All from '@/pages/admins/users/dashboard/admin-all.tsx'
 import AuthLayout from '@/pages/auth/auth-layout.tsx'
 import Login from '@/pages/auth/login.tsx'
 import Signup from '@/pages/auth/signup.tsx'
-import MovieMain from '@/pages/service/movie.tsx'
+import BoardMain from '@/pages/service/board/board.tsx'
+import BoardCreate from '@/pages/service/board/create.tsx'
+import BoardDetail from '@/pages/service/board/detail.tsx'
+import MovieMain from '@/pages/service/movie/movie.tsx'
+import MyInfo from '@/pages/service/my-info.tsx'
+import Notice from '@/pages/service/notice.tsx'
 
 export default function Router() {
     return (
         <Routes>
+            {/*ADMIN*/}
             <Route element={<AdminAuthLayout />}>
                 <Route path="/admin" element={<AdminMain />} />
                 <Route path="/admin/auth/login" element={<AdminLogin />} />
@@ -31,8 +37,17 @@ export default function Router() {
                 <Route path="/admin/users/edit" element={<UsersEditPage />} />
                 <Route path="/admin/users/all" element={<All />} />
             </Route>
+
+            {/*USER*/}
             <Route path="/" element={<Index />} />
             <Route path="/movie" element={<MovieMain />} />
+            <Route path="/my-info" element={<MyInfo />} />
+            <Route path="/notice" element={<Notice />} />
+
+            <Route path="/board" element={<BoardMain />} />
+            <Route path="/board/create" element={<BoardCreate />} />
+            <Route path="/board/:boardId" element={<BoardDetail />} />
+
             <Route element={<AuthLayout />}>
                 <Route path="/auth/signup" element={<Signup />} />
                 <Route path="/auth/login" element={<Login />} />

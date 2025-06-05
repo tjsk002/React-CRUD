@@ -38,12 +38,28 @@ export default function Header() {
 
     return (
         <div>
-            <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-sm h-14 flex items-center justify-between px-40">
+            <header className="fixed top-0 left-0 right-0 z-50 bg-white border-gray-200 shadow-sm h-14 flex items-center justify-between px-40">
                 <h1 className="text-xl font-bold text-blue-600">
                     <a onClick={viewHome} className="cursor-default">
-                        FeedSpot
+                        FeedSpot{' '}
+                        <span className="text-xs font-sans text-gray-400">
+                            자유롭게 대화를 나누는 피드 스팟
+                        </span>
                     </a>
                 </h1>
+                <div>
+                    <nav className="px-40 py-3 border-gray-200 flex gap-4 text-gray-600 text-sm font-medium">
+                        <a href="/movie" className="hover:text-blue-600 transition-colors">
+                            실시간 영화 정보
+                        </a>
+                        <a href="/board" className="hover:text-blue-600 transition-colors">
+                            자유 게시물
+                        </a>
+                        <a href="/notice" className="hover:text-blue-600 transition-colors">
+                            공지사항
+                        </a>
+                    </nav>
+                </div>
                 {user.nickName == '' ? <AuthButton /> : <AccountMenu user={user} />}
             </header>
         </div>

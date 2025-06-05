@@ -29,6 +29,8 @@ export default function Login() {
         onError: (error: AxiosError<ErrorResponse>) => {
             if (error.status === 404) {
                 alert('서버 오류가 발생하였습니다. API 연동을 해주세요.')
+            } else if (error.status == 400) {
+                setErrorMessage(error.response?.data?.resultData?.message ?? '')
             } else {
                 alert(error.message)
                 setErrorMessage(error.response?.data?.resultData?.message ?? '')

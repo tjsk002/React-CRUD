@@ -34,6 +34,10 @@ export default function AccountMenu({ user }: AccountMenuProps) {
         mutation.mutate()
     }
 
+    function myInfo() {
+        navigate('/my-info')
+    }
+
     return (
         <div className="relative text-sm">
             <div
@@ -44,7 +48,10 @@ export default function AccountMenu({ user }: AccountMenuProps) {
             </div>
             {isOpen && (
                 <div className="absolute right-0 mt-2 w-40 bg-white text-black rounded-md shadow-md border border-gray-200">
-                    <button className="block w-40 text-center px-5 py-3 text-sm hover:bg-gray-100 transition">
+                    <button
+                        className="block w-40 text-center px-5 py-3 text-sm hover:bg-gray-100 transition"
+                        onClick={myInfo}
+                    >
                         내 정보
                     </button>
                     <button
