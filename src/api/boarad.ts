@@ -3,7 +3,7 @@ import { CreateBoardInfo } from '@/pages/service/schema/board-schema.tsx'
 
 const ENDPOINT_BOARDS = '/api/boards'
 
-export const getBoards = async (page = 0, size = 100, sort = 'commentCount,desc') => {
+export const getBoards = async (page = 0, size = 100, sort = 'createdAt,desc') => {
     const response = await api.get(`${ENDPOINT_BOARDS}`, {
         params: {
             page,
@@ -23,5 +23,12 @@ export const createBoard = async (data: CreateBoardInfo) => {
 
 export const getBoardDetail = async (boardId: number) => {
     const response = await api.get(`${ENDPOINT_BOARDS}/${boardId}`)
+    return response.data.resultData.data
+}
+
+export const increaseViewCount = async (boardId: number) => {
+    const response = await api.post(`${ENDPOINT_BOARDS}/view-count`, {
+        boardId: boardId,
+    })
     return response.data.resultData.data
 }

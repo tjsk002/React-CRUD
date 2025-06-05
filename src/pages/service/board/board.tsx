@@ -12,6 +12,7 @@ type boardListInfo = {
     id: number
     user: {
         username: string
+        nickName: string
     }
     title: string
     content: string
@@ -69,6 +70,7 @@ export default function Board() {
                             >
                                 <option value="recent">최신순</option>
                                 <option value="popular">인기순</option>
+                                <option value="owner">내가쓴 글</option>
                             </select>
                         </div>
                         <a
@@ -101,7 +103,7 @@ export default function Board() {
                                     </div>
                                     <div className="flex items-center space-x-6 text-sm text-gray-500 whitespace-nowrap">
                                         <span>
-                                            {board.user.username} · {board.createdAt}
+                                            {board.user.nickName} · {board.createdAt}
                                         </span>
                                     </div>
                                 </div>

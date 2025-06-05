@@ -26,53 +26,56 @@ export default function CommentCreate({ targetDate }: CommentProps) {
             content: '',
         },
     })
+
     const queryClient = useQueryClient()
     const navigate = useNavigate()
     const [userData, setUserData] = useState({
         nickName: '',
     })
-    const mutation = useMutation({
-        mutationFn: createComment,
-        onSuccess: () => {
-            alert('댓글이 정상적으로 등록되었습니다.')
-            reset({
-                content: '',
-                targetDate: targetDate,
-            })
-            queryClient
-                .invalidateQueries({
-                    queryKey: ['comments', targetDate],
-                })
-                .then()
-        },
-        onError: (error: AxiosError<ErrorResponse>) => {
-            if (error.response?.status === 403) {
-                alert('로그인이 필요합니다. 로그인 페이지로 이동합니다.')
-                navigate('/auth/login')
-            } else {
-                alert('댓글 등록에 실패했습니다.' + error)
-            }
-        },
-    })
-    const onSubmit = (data: CommentInfo) => {
-        mutation.mutate({
-            ...data,
-            targetDate,
-        })
-    }
     useEffect(() => {
         const storedData = localStorage.getItem('userData')
         if (storedData) {
             try {
                 const parsedData = JSON.parse(storedData)
                 setUserData({
-                    nickName: parsedData.nickName,
+                    nickName: parsedData.nickName || null,
                 })
             } catch (error) {
-                alert(error)
+                console.error('유저 데이터 파싱 오류:', error)
+                alert('로그인 정보에 문제가 있습니다. 다시 로그인해주세요.')
             }
         }
     }, [])
+
+    const mutation = useMutation({
+        mutationFn: createComment,
+        onSuccess: () => {
+            alert('댓글이 정상적으로 등록되었습니다.')
+            reset({
+                content: '',
+                targetDate,
+            })
+            queryClient.invalidateQueries({ queryKey: ['comments', targetDate] })
+        },
+        onError: (error: AxiosError<ErrorResponse>) => {
+            if (error.response?.status === 403) {
+                alert('로그인이 필요합니다. 로그인 페이지로 이동합니다.')
+                navigate('/auth/login')
+            } else {
+                alert('댓글 등록에 실패했습니다: ' + error.message)
+            }
+        },
+    })
+
+    const onSubmit = (data: CommentInfo) => {
+        if (!userData.nickName) {
+            alert('로그인이 필요합니다. 로그인 페이지로 이동합니다.')
+            navigate('/auth/login')
+            return
+        }
+
+        mutation.mutate({ ...data, targetDate })
+    }
 
     return (
         <form
@@ -81,7 +84,7 @@ export default function CommentCreate({ targetDate }: CommentProps) {
         >
             <h4 className="text-sm font-semibold text-gray-700">💬 댓글 작성</h4>
             <div className="flex flex-col sm:flex-row gap-2">
-                {userData?.nickName && (
+                {userData.nickName && (
                     <input
                         type="text"
                         value={userData.nickName}
