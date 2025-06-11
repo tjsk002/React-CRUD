@@ -34,6 +34,15 @@ export default function Header() {
 
     useEffect(() => {
         fetchMy()
+        const handleUpdate = () => {
+            fetchMy()
+        }
+
+        window.addEventListener('userData', handleUpdate)
+
+        return () => {
+            window.removeEventListener('userData', handleUpdate)
+        }
     }, [])
 
     return (

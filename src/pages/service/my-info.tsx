@@ -1,9 +1,11 @@
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { myInfoProcess } from '@/api/user.ts'
+import { myInfoEdit, myInfoProcess } from '@/api/user.ts'
+import FormButton from '@/pages/admins/common/form-button.tsx'
 import Footer from '@/pages/common/footer.tsx'
 import Header from '@/pages/common/header.tsx'
+import { useMutation } from '@tanstack/react-query'
 
 type MyInfo = {
     id: number
@@ -20,7 +22,8 @@ type MyInfo = {
 }
 
 export default function MyInfo() {
-    const { register, reset } = useForm<MyInfo>()
+    const { register, reset, watch, handleSubmit } = useForm<MyInfo>()
+    const updatedAt = watch('updatedAt')
     const fetchMy = async () => {
         await myInfoProcess()
             .then(async (res) => {
@@ -30,6 +33,7 @@ export default function MyInfo() {
                     nickName: res.nickName,
                     gender: res.gender,
                     isActive: res.isActive,
+                    description: res.description,
                     role: res.role,
                     type: res.type,
                     createdAt: parseDate(res.createdAt),
@@ -56,7 +60,25 @@ export default function MyInfo() {
         }).format(new Date(data))
     }
 
-    function edit() {}
+    const mutation = useMutation({
+        mutationFn: myInfoEdit,
+        onSuccess: (data: MyInfo) => {
+            alert('회원 정보가 수정되었습니다.')
+            localStorage.setItem(
+                'userData',
+                JSON.stringify({
+                    id: data.id,
+                    nickName: data.nickName,
+                    username: data.username,
+                    role: data.role,
+                })
+            )
+            window.dispatchEvent(new Event('userData'))
+        },
+    })
+    const onSubmit = (data: MyInfo) => {
+        mutation.mutate(data)
+    }
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -64,7 +86,7 @@ export default function MyInfo() {
             <main className="pt-28 px-40 flex-grow">
                 <section className="mb-12">
                     <h1 className="text-2xl font-semibold text-gray-800 mb-6">내 정보</h1>
-                    <form>
+                    <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="bg-white shadow-sm rounded-lg p-6 space-y-6">
                             <div className="grid grid-cols-2 gap-6">
                                 <div className="text-gray-700 font-medium flex items-center mb-2">
@@ -116,7 +138,7 @@ export default function MyInfo() {
                                     <input
                                         className="w-[80%] border-gray-200 bg-gray-100 rounded-md px-3 py-2 text-sm text-gray-500 cursor-not-allowed"
                                         id="updatedAt"
-                                        {...register('updatedAt')}
+                                        value={updatedAt}
                                         readOnly={true}
                                     />
                                 </div>
@@ -131,21 +153,14 @@ export default function MyInfo() {
                                 <h2 className="text-lg font-semibold text-gray-800 mb-2">
                                     자기소개
                                 </h2>
-                                <input
+                                <textarea
                                     className="w-full border border-gray-200 rounded-md px-3 py-3 text-sm text-gray-500"
                                     id="description"
                                     {...register('description')}
                                     style={{ height: '100px' }}
                                 />
                             </div>
-                            <div>
-                                <a
-                                    onClick={edit}
-                                    className="bg-blue-600 hover:bg-blue-700 cursor-default text-white px-4 py-2 rounded-md transition-colors"
-                                >
-                                    수정
-                                </a>
-                            </div>
+                            <FormButton mode={'edit'} />
                         </div>
                     </form>
                 </section>
