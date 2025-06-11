@@ -1,38 +1,62 @@
-import { useState } from 'react'
+import { useEffect } from 'react'
+import { useForm } from 'react-hook-form'
 
+import { myInfoProcess } from '@/api/user.ts'
 import Footer from '@/pages/common/footer.tsx'
 import Header from '@/pages/common/header.tsx'
 
-export default function Profile() {
-    // 더미 데이터 (실제로는 API로 가져오는 정보들)
-    const user = {
-        id: 'user123',
-        created_at: '2025-01-15 09:00',
-        updated_at: '2025-05-20 10:30',
-        deleted_at: null,
-        description: '영화를 좋아하는 지나가는 사람입니다. 마저 지나가겠습니다.',
-        gender: '남성',
-        is_active: true,
-        nick_name: 'Chulsoo',
-        role: 'Admin',
-        type: 'Regular',
-        user_name: '김철수',
+type MyInfo = {
+    id: number
+    username: string
+    nickName: string
+    description: string
+    gender: string
+    isActive: boolean
+    role: string
+    type: string
+    createdAt: string
+    updatedAt?: string
+    deletedAt?: string
+}
+
+export default function MyInfo() {
+    const { register, reset } = useForm<MyInfo>()
+    const fetchMy = async () => {
+        await myInfoProcess()
+            .then(async (res) => {
+                reset({
+                    id: res.id,
+                    username: res.username,
+                    nickName: res.nickName,
+                    gender: res.gender,
+                    isActive: res.isActive,
+                    role: res.role,
+                    type: res.type,
+                    createdAt: parseDate(res.createdAt),
+                    updatedAt: parseDate(res.updatedAt),
+                })
+            })
+            .catch((error) => {
+                alert(error.message)
+            })
     }
 
-    const [editing, setEditing] = useState(false)
-    const [description, setDescription] = useState(user.description)
-    const [nickName, setNickName] = useState(user.nick_name)
-    const [editingNickName, setEditingNickName] = useState(false)
+    useEffect(() => {
+        fetchMy().then()
+    }, [])
 
-    const handleSave = () => {
-        // 실제 저장 로직 추가 가능
-        setEditing(false)
+    function parseDate(data: string) {
+        return new Intl.DateTimeFormat('ko-KR', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+        }).format(new Date(data))
     }
 
-    const handleSaveNickName = () => {
-        // 닉네임 저장 로직
-        setEditingNickName(false)
-    }
+    function edit() {}
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -40,108 +64,90 @@ export default function Profile() {
             <main className="pt-28 px-40 flex-grow">
                 <section className="mb-12">
                     <h1 className="text-2xl font-semibold text-gray-800 mb-6">내 정보</h1>
-
-                    {/* 사용자 정보 */}
-                    <div className="bg-white shadow-sm rounded-lg p-6 space-y-6">
-                        <div className="grid grid-cols-2 gap-6">
-                            <div className="text-gray-700 font-medium">
-                                <strong>사용자 이름:</strong> <span>{user.user_name}</span>
-                            </div>
-                            <div className="text-gray-700 font-medium">
-                                <strong>닉네임:</strong>
-                                {editingNickName ? (
-                                    <div className="flex items-center space-x-2">
-                                        <input
-                                            type="text"
-                                            value={nickName}
-                                            onChange={(e) => setNickName(e.target.value)}
-                                            className="p-2 border border-gray-300 rounded-md"
-                                        />
-                                        <button
-                                            onClick={handleSaveNickName}
-                                            className="px-4 py-2 bg-blue-500 text-white rounded-md"
-                                        >
-                                            저장
-                                        </button>
-                                    </div>
-                                ) : (
-                                    <span className="flex items-center space-x-2">
-                                        <span>{nickName}</span>
-                                        <button
-                                            onClick={() => setEditingNickName(true)}
-                                            className="text-blue-500"
-                                        >
-                                            수정
-                                        </button>
-                                    </span>
-                                )}
-                            </div>
-                            <div className="text-gray-700 font-medium">
-                                <strong>성별:</strong> <span>{user.gender}</span>
-                            </div>
-                            <div className="text-gray-700 font-medium">
-                                <strong>이메일:</strong> <span>{user.id}</span>
-                            </div>
-                            <div className="text-gray-700 font-medium">
-                                <strong>역할:</strong> <span>{user.role}</span>
-                            </div>
-                            <div className="text-gray-700 font-medium">
-                                <strong>유형:</strong> <span>{user.type}</span>
-                            </div>
-                            <div className="text-gray-700 font-medium">
-                                <strong>계정 상태:</strong>{' '}
-                                <span
-                                    className={user.is_active ? 'text-green-500' : 'text-red-500'}
-                                >
-                                    {user.is_active ? '활성화' : '비활성화'}
-                                </span>
-                            </div>
-                            <div className="text-gray-700 font-medium">
-                                <strong>가입일:</strong> <span>{user.created_at}</span>
-                            </div>
-                            <div className="text-gray-700 font-medium">
-                                <strong>최근 수정일:</strong> <span>{user.updated_at}</span>
-                            </div>
-                            {user.deleted_at && (
-                                <div className="text-gray-700 font-medium">
-                                    <strong>삭제일:</strong> <span>{user.deleted_at}</span>
+                    <form>
+                        <div className="bg-white shadow-sm rounded-lg p-6 space-y-6">
+                            <div className="grid grid-cols-2 gap-6">
+                                <div className="text-gray-700 font-medium flex items-center mb-2">
+                                    <strong className="w-[20%]">사용자 이름: </strong>
+                                    <input
+                                        className="w-[80%] border-gray-200 bg-gray-100 rounded-md px-3 py-2 text-sm text-gray-500 cursor-not-allowed"
+                                        id="username"
+                                        {...register('username')}
+                                        readOnly={true}
+                                    />
                                 </div>
-                            )}
-                        </div>
-                    </div>
-
-                    {/* 자기소개 */}
-                    <div className="bg-white shadow-sm rounded-lg p-6 mt-8">
-                        <div className="flex justify-between items-center mb-4">
-                            <h2 className="text-lg font-semibold text-gray-800">자기소개</h2>
-                            {editing ? (
-                                <button
-                                    onClick={handleSave}
-                                    className="px-4 py-2 bg-blue-500 text-white rounded-md"
-                                >
-                                    저장
-                                </button>
-                            ) : (
-                                <button
-                                    onClick={() => setEditing(true)}
-                                    className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                                <div className="text-gray-700 font-medium flex items-center mb-2">
+                                    <strong className="w-[20%]">닉네임: </strong>
+                                    <input
+                                        className="w-[80%] border-gray-200 rounded-md px-3 py-2 text-sm text-gray-500"
+                                        id="nickName"
+                                        {...register('nickName')}
+                                    />
+                                </div>
+                                <div className="text-gray-700 font-medium flex items-center mb-2">
+                                    <strong className="w-[20%]">성별: </strong>
+                                    <input
+                                        className="w-[80%] border-gray-200 bg-gray-100 rounded-md px-3 py-2 text-sm text-gray-500 cursor-not-allowed"
+                                        id="gender"
+                                        {...register('gender')}
+                                        readOnly={true}
+                                    />
+                                </div>
+                                <div className="text-gray-700 font-medium flex items-center mb-2">
+                                    <strong className="w-[20%]">역할: </strong>
+                                    <input
+                                        className="w-[80%] border-gray-200 bg-gray-100 rounded-md px-3 py-2 text-sm text-gray-500 cursor-not-allowed"
+                                        id="role"
+                                        {...register('role')}
+                                        readOnly={true}
+                                    />
+                                </div>
+                                <div className="text-gray-700 font-medium flex items-center mb-2">
+                                    <strong className="w-[20%]">가입일: </strong>
+                                    <input
+                                        className="w-[80%] border-gray-200 bg-gray-100 rounded-md px-3 py-2 text-sm text-gray-500 cursor-not-allowed"
+                                        id="createdAt"
+                                        {...register('createdAt')}
+                                        readOnly={true}
+                                    />
+                                </div>
+                                <div className="text-gray-700 font-medium flex items-center mb-2">
+                                    <strong className="w-[20%]">최근 수정일: </strong>
+                                    <input
+                                        className="w-[80%] border-gray-200 bg-gray-100 rounded-md px-3 py-2 text-sm text-gray-500 cursor-not-allowed"
+                                        id="updatedAt"
+                                        {...register('updatedAt')}
+                                        readOnly={true}
+                                    />
+                                </div>
+                                <div className="text-gray-700 font-medium flex items-center mb-2">
+                                    <strong className="w-[20%]">계정 상태: </strong>
+                                    <label>
+                                        <input type="checkbox" {...register('isActive')} /> 활성
+                                    </label>
+                                </div>
+                            </div>
+                            <div className="mb-4">
+                                <h2 className="text-lg font-semibold text-gray-800 mb-2">
+                                    자기소개
+                                </h2>
+                                <input
+                                    className="w-full border border-gray-200 rounded-md px-3 py-3 text-sm text-gray-500"
+                                    id="description"
+                                    {...register('description')}
+                                    style={{ height: '100px' }}
+                                />
+                            </div>
+                            <div>
+                                <a
+                                    onClick={edit}
+                                    className="bg-blue-600 hover:bg-blue-700 cursor-default text-white px-4 py-2 rounded-md transition-colors"
                                 >
                                     수정
-                                </button>
-                            )}
+                                </a>
+                            </div>
                         </div>
-
-                        {editing ? (
-                            <textarea
-                                value={description}
-                                onChange={(e) => setDescription(e.target.value)}
-                                className="w-full p-4 border border-gray-300 rounded-md"
-                                rows={6}
-                            />
-                        ) : (
-                            <p className="text-gray-600">{description}</p>
-                        )}
-                    </div>
+                    </form>
                 </section>
             </main>
             <Footer />

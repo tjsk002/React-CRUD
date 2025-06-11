@@ -1,13 +1,13 @@
 import { Navigate, Outlet } from 'react-router'
 
-const AdminLayout = () => {
+const PrivateOnlyRoute = () => {
     const token = localStorage.getItem('accessToken')
-    const storedData = localStorage.getItem('adminData')
+    const storedData = localStorage.getItem('userData')
     if (!token && !storedData) {
-        return <Navigate to="/admin/auth" />
+        return <Navigate to="/auth/login" />
     }
 
     return <Outlet />
 }
 
-export default AdminLayout
+export default PrivateOnlyRoute
