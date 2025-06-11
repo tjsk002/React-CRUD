@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { FiSearch } from 'react-icons/fi'
 import { useNavigate } from 'react-router'
 
@@ -12,13 +12,21 @@ export default function Board() {
     const navigate = useNavigate()
     const token = localStorage.getItem('accessToken')
     const userData = localStorage.getItem('userData')
+    const page = 0
+    const size = 100
+    const sort = 'createdAt,desc'
+    const [searchKeyword, setSearchKeyword] = useState('')
+    const inputRef = useRef<HTMLInputElement>(null)
+
     const { data } = useQuery({
-        queryKey: ['boards'],
-        queryFn: () => getBoards(),
+        queryKey: ['boards', searchKeyword],
+        queryFn: () => getBoards(page, size, sort, searchKeyword),
     })
 
-    const [searchQuery, setSearchQuery] = useState('')
-    const [sortOption, setSortOption] = useState<'popular' | 'recent'>('recent')
+    function searchBoard() {
+        const keyword = inputRef.current?.value || ''
+        setSearchKeyword(keyword)
+    }
 
     function create() {
         if (token && userData) {
@@ -39,22 +47,21 @@ export default function Board() {
                             <FiSearch className="text-gray-500" />
                             <input
                                 type="text"
-                                placeholder="검색..."
+                                placeholder="제목"
                                 className="px-4 py-2 border border-gray-300 rounded-md"
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
+                                ref={inputRef}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        searchBoard()
+                                    }
+                                }}
                             />
-                            <select
-                                className="px-4 py-2 border border-gray-300 rounded-md"
-                                value={sortOption}
-                                onChange={(e) =>
-                                    setSortOption(e.target.value as 'popular' | 'recent')
-                                }
+                            <button
+                                onClick={searchBoard}
+                                className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md"
                             >
-                                <option value="recent">최신순</option>
-                                <option value="popular">인기순</option>
-                                <option value="owner">내가쓴 글</option>
-                            </select>
+                                검색
+                            </button>
                         </div>
                         <a
                             onClick={create}
