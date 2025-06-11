@@ -3,12 +3,13 @@ import { CreateBoardInfo } from '@/pages/service/schema/board-schema.tsx'
 
 const ENDPOINT_BOARDS = '/api/boards'
 
-export const getBoards = async (page = 0, size = 100, sort = 'createdAt,desc') => {
+export const getBoards = async (page = 0, size = 100, sort = 'createdAt,desc', keyword = '') => {
     const response = await api.get(`${ENDPOINT_BOARDS}`, {
         params: {
             page,
             size,
             sort,
+            keyword,
         },
     })
     return response.data
