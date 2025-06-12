@@ -1,5 +1,8 @@
 import axios from 'axios'
 
+const ADMIN_LOGIN_URL = '/admin/auth/login'
+const LOGIN_URL = '/auth/login'
+
 export const api = axios.create({
     baseURL: import.meta.env.VITE_API_BASE_URL,
     headers: {
@@ -11,27 +14,32 @@ export const api = axios.create({
 const refreshAccessToken = async () => {
     await api
         .post(
-            '/admin/auth/refresh',
+            '/auth/refresh',
             {},
             {
                 headers: {
-                    authorization: localStorage.getItem('accessToken'),
+                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
                 },
             }
         )
         .then((response) => {
             const newAccessToken = response.headers.authorization
-
-            if (newAccessToken) {
-                localStorage.clear()
-                localStorage.setItem('accessToken', newAccessToken)
-            }
+            localStorage.setItem('accessToken', newAccessToken)
         })
         .catch((error) => {
-            console.log(`error ${error}`)
+            console.log(`접속 오류 ${error}`)
             alert('접속시간이 만료되었습니다. 다시 로그인 해주세요.')
-            window.location.href = '/admin/auth/login'
+            const storedData = localStorage.getItem('userData')
+            if (!storedData) return
+            const { role } = JSON.parse(storedData)
+            window.location.href = role === 'USER' ? LOGIN_URL : ADMIN_LOGIN_URL
+            logout()
         })
+}
+
+const logout = () => {
+    localStorage.clear()
+    localStorage.removeItem('accessToken')
 }
 
 api.interceptors.request.use(

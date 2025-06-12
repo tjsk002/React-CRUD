@@ -22,26 +22,28 @@ type MyInfo = {
 }
 
 export default function MyInfo() {
-    const { register, reset, watch, handleSubmit } = useForm<MyInfo>()
-    const updatedAt = watch('updatedAt')
+    const { register, reset, handleSubmit } = useForm<MyInfo>()
     const fetchMy = async () => {
         await myInfoProcess()
             .then(async (res) => {
-                reset({
-                    id: res.id,
-                    username: res.username,
-                    nickName: res.nickName,
-                    gender: res.gender,
-                    isActive: res.isActive,
-                    description: res.description,
-                    role: res.role,
-                    type: res.type,
-                    createdAt: parseDate(res.createdAt),
-                    updatedAt: parseDate(res.updatedAt),
-                })
+                if (res) {
+                    reset({
+                        id: res.id,
+                        username: res.username,
+                        nickName: res.nickName,
+                        gender: res.gender,
+                        isActive: res.isActive,
+                        description: res.description,
+                        role: res.role,
+                        type: res.type,
+                        createdAt: parseDate(res.createdAt),
+                        updatedAt: parseDate(res.updatedAt),
+                    })
+                }
             })
             .catch((error) => {
-                alert(error.message)
+                console.log(error.message)
+                window.location.href = '/my-info'
             })
     }
 
@@ -138,7 +140,7 @@ export default function MyInfo() {
                                     <input
                                         className="w-[80%] border-gray-200 bg-gray-100 rounded-md px-3 py-2 text-sm text-gray-500 cursor-not-allowed"
                                         id="updatedAt"
-                                        value={updatedAt}
+                                        {...register('updatedAt')}
                                         readOnly={true}
                                     />
                                 </div>
