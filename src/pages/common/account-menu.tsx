@@ -23,7 +23,7 @@ export default function AccountMenu({ user }: AccountMenuProps) {
             localStorage.clear()
             localStorage.removeItem('accessToken')
             alert('로그아웃 되었습니다.')
-            navigate('/')
+            window.location.reload()
         },
         onError: (error) => {
             alert(error)
