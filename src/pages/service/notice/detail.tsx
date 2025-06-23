@@ -1,30 +1,21 @@
-import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 
-import { getBoardDetail } from '@/api/boarad.ts'
+import { getNoticeDetail } from '@/api/notice.ts'
 import Footer from '@/pages/common/footer'
 import Header from '@/pages/common/header'
 import { useQuery } from '@tanstack/react-query'
 
-export default function BoardDetail() {
-    const { boardId } = useParams()
+export default function NoticeDetail() {
+    const { noticeId } = useParams()
     const navigate = useNavigate()
-    const [isOwner, setOwner] = useState(false)
     const { data, isLoading, isError } = useQuery({
-        queryKey: ['boardDetail', boardId],
-        queryFn: () => getBoardDetail(Number(boardId)),
+        queryKey: ['noticeDetail', noticeId],
+        queryFn: () => getNoticeDetail(Number(noticeId)),
     })
     console.log(data)
-    useEffect(() => {
-        const stored = localStorage.getItem('userData')
-        if (stored && data?.user?.userId) {
-            const userData = JSON.parse(stored)
-            setOwner(userData.id == data.user.userId)
-        }
-    }, [data])
 
     if (isLoading) return <div className="pt-28 px-40">로딩 중...</div>
-    if (isError) return <div className="pt-28 px-40">게시물을 불러오는 데 실패했습니다.</div>
+    if (isError) return <div className="pt-28 px-40">공지사항을 불러오는 데 실패했습니다.</div>
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -48,22 +39,16 @@ export default function BoardDetail() {
                     </div>
 
                     <div className="flex justify-between text-sm text-gray-500 mb-6">
-                        <div className="flex items-center space-x-2">
-                            <div className={'mt-2 mb-2'}>
-                                <span
-                                    className={`text-xs font-semibold px-2 py-1 rounded-full bg-blue-100 text-blue-600`}
-                                >
-                                    자유 게시물
-                                </span>
-                            </div>
-                            <span className="font-semibold">작성자 : {data.user.nickName}</span>
+                        <div className={'mt-2 mb-2'}>
+                            <span
+                                className={`text-xs font-semibold px-2 py-1 rounded-full bg-green-100 text-green-600`}
+                            >
+                                공지사항
+                            </span>
                         </div>
                         <div className="space-x-4">
                             <span>
                                 조회 수 <b>{data.viewCount}</b>
-                            </span>
-                            <span>
-                                댓글 <b>{data.commentCount}</b>
                             </span>
                         </div>
                     </div>
@@ -71,13 +56,6 @@ export default function BoardDetail() {
                         className="prose max-w-none text-gray-800 whitespace-pre-wrap"
                         dangerouslySetInnerHTML={{ __html: data.content }}
                     ></div>
-                    {isOwner && (
-                        <div className="mt-10">
-                            <a className="py-2 font-xs underline hover:text-blue-600 rounded-md cursor-default">
-                                수정하기
-                            </a>
-                        </div>
-                    )}
                 </section>
             </main>
             <Footer />
