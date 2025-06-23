@@ -4,11 +4,10 @@ const ENDPOINT_NOTICES = '/api/notices'
 
 export const getNotices = async () => {
     const response = await api.get(ENDPOINT_NOTICES)
-    return response.data.resultData.data.list
+    return response.data.resultData.data
 }
 
 export const getNoticeDetail = async (noticeId: number) => {
     const response = await api.get(`${ENDPOINT_NOTICES}/${noticeId}`)
-    console.log(response.data)
     return response.data.resultData.data
 }
