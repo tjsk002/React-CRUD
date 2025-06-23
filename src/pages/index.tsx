@@ -2,7 +2,7 @@ import { getBoards } from '@/api/boarad.ts'
 import Footer from '@/pages/common/footer.tsx'
 import Header from '@/pages/common/header.tsx'
 import BoardList from '@/pages/service/board/list.tsx'
-import NoticeList from '@/pages/service/notice.tsx'
+import NoticeList from '@/pages/service/notice/notice.tsx'
 import { useQuery } from '@tanstack/react-query'
 
 export default function Index() {
