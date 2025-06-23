@@ -49,6 +49,13 @@ export default function BoardDetail() {
 
                     <div className="flex justify-between text-sm text-gray-500 mb-6">
                         <div className="flex items-center space-x-2">
+                            <div className={'mt-2 mb-2'}>
+                                <span
+                                    className={`text-xs font-semibold px-2 py-1 rounded-full bg-blue-100 text-blue-600`}
+                                >
+                                    자유 게시물
+                                </span>
+                            </div>
                             <span className="font-semibold">작성자 : {data.user.nickName}</span>
                         </div>
                         <div className="space-x-4">
