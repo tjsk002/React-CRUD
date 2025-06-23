@@ -20,7 +20,8 @@ import BoardCreate from '@/pages/service/board/create.tsx'
 import BoardDetail from '@/pages/service/board/detail.tsx'
 import MovieMain from '@/pages/service/movie/movie.tsx'
 import MyInfo from '@/pages/service/my-info.tsx'
-import Notice from '@/pages/service/notice.tsx'
+import NoticeDetail from '@/pages/service/notice/detail.tsx'
+import Notice from '@/pages/service/notice/notice.tsx'
 
 export default function Router() {
     return (
@@ -44,6 +45,7 @@ export default function Router() {
             <Route path="/" element={<Index />} />
             <Route path="/movie" element={<MovieMain />} />
             <Route path="/notice" element={<Notice />} />
+            <Route path="/notice/:noticeId" element={<NoticeDetail />} />
             <Route path="/board" element={<BoardMain />} />
             <Route path="/board/:boardId" element={<BoardDetail />} />
 
