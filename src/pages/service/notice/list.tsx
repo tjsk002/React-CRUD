@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router'
 
+import { increaseViewCount } from '@/api/notice.ts'
 import { Eye } from 'lucide-react'
 
 type noticeListInfo = {
@@ -18,6 +19,16 @@ export default function NoticeList({ noticeList }: CommentProps) {
     const navigate = useNavigate()
 
     function noticeClick(noticeId: number) {
+        increaseViewCount(noticeId)
+            .then(() => {
+                noticeDetail(noticeId)
+            })
+            .catch(() => {
+                noticeDetail(noticeId)
+            })
+    }
+
+    function noticeDetail(noticeId: number) {
         navigate(`/notice/${noticeId}`)
     }
 
